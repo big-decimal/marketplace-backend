@@ -10,6 +10,7 @@ import com.marketplace.domain.ApplicationException;
 import com.marketplace.domain.Utils;
 import com.marketplace.domain.common.HTMLStringSanitizer;
 import com.marketplace.domain.general.CityDao;
+import com.marketplace.domain.market.MarketDao;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopContactInput;
 import com.marketplace.domain.shop.ShopCreateInput;
@@ -31,13 +32,16 @@ public class CreateShopUseCase {
 
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private CityDao cityDao;
-	
+
 	@Autowired
 	private ShopRatingDao shopRatingDao;
-	
+
+	@Autowired
+	private MarketDao marketDao;
+
 	@Autowired
 	private ShopStatusHistoryDao shopStatusHistoryDao;
 
@@ -49,10 +53,10 @@ public class CreateShopUseCase {
 
 	@Autowired
 	private CreateShopMemberUseCase createShopMemberUseCase;
-	
+
 	@Autowired
 	private SaveShopSettingUseCase saveShopSettingUseCase;
-	
+
 	@Autowired
 	private SaveShopAcceptedPaymentUseCase saveShopAcceptedPaymentUseCase;
 
@@ -61,7 +65,10 @@ public class CreateShopUseCase {
 
 	@Autowired
 	private UploadShopCoverUseCase uploadShopCoverUseCase;
-	
+
+	@Autowired
+	private UploadShopLicenseUseCase uploadShopLicenseUseCase;
+
 	@Transactional
 	public void apply(ShopCreateInput values) {
 		var rawSlug = Utils.convertToSlug(values.getSlug());
@@ -72,50 +79,54 @@ public class CreateShopUseCase {
 		if (!Utils.hasText(rawSlug)) {
 			throw new ApplicationException("Required shop slug");
 		}
-		
+
 		if (!Utils.hasText(values.getPhone())) {
 			throw new ApplicationException("Required phone number");
 		}
-		
+
 		if (!userDao.existsById(values.getUserId())) {
 			throw new ApplicationException("User not found");
 		}
-		
+
 		if (!cityDao.existsById(values.getCityId())) {
 			throw new ApplicationException("City not found");
 		}
-		
+
+		if (values.getMarketId() != null && !marketDao.existsById(values.getMarketId())) {
+			throw new ApplicationException("Market not found");
+		}
+
 		values.setAbout(htmlStringSanitizer.sanitize(values.getAbout()));
-		
+
 		var slug = Utils.generateSlug(rawSlug, v -> shopDao.existsBySlug(v));
-    	values.setSlug(slug);
+		values.setSlug(slug);
 
 		var acceptedPayments = values.getAcceptedPayments();
-		
+
 		if (values.isBankTransfer() && (acceptedPayments == null || acceptedPayments.isEmpty())) {
 			throw new ApplicationException("Required accepted payments");
 		}
 
 		var shopId = shopDao.create(values);
-		
+
 		var userId = values.getUserId();
-		
+
 		var rating = new ShopRating();
 		rating.setShopId(shopId);
-		
+
 		shopRatingDao.save(rating);
-		
+
 		var contact = new ShopContactInput();
 		contact.setAddress(values.getAddress());
 		contact.setPhones(Arrays.asList(values.getPhone()));
 		contact.setShopId(shopId);
 		contact.setCityId(values.getCityId());
 		saveShopContactUseCase.apply(contact);
-		
+
 		var setting = new ShopSettingInput();
 		setting.setShopId(shopId);
 		setting.setCashOnDelivery(true);
-		
+
 		saveShopSettingUseCase.apply(setting);
 
 		var member = new ShopMemberInput();
@@ -124,11 +135,11 @@ public class CreateShopUseCase {
 		member.setUserId(userId);
 
 		createShopMemberUseCase.apply(member);
-		
+
 		if (acceptedPayments != null && !acceptedPayments.isEmpty()) {
 			saveShopAcceptedPaymentUseCase.apply(shopId, acceptedPayments);
 		}
-		
+
 		if (values.getLogo() != null && !values.getLogo().isEmpty()) {
 			uploadShopLogoUseCase.apply(shopId, values.getLogo());
 		}
@@ -136,12 +147,16 @@ public class CreateShopUseCase {
 		if (values.getCover() != null && !values.getCover().isEmpty()) {
 			uploadShopCoverUseCase.apply(shopId, values.getCover());
 		}
-		
+
+		if (values.getLicenses() != null) {
+			uploadShopLicenseUseCase.apply(shopId, values.getLicenses());
+		}
+
 		var history = new ShopStatusHistory();
 		history.setShopId(shopId);
 		history.setStatus(Shop.Status.PENDING);
 		history.setRemark("Shop created");
-		
+
 		shopStatusHistoryDao.save(history);
 	}
 

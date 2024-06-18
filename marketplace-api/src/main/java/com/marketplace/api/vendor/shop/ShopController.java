@@ -55,6 +55,11 @@ public class ShopController {
 		shopFacade.uploadCover(shopId, file);
 	}
 
+	@PostMapping("licenses")
+	public void uploadLicense(@PathVariable long shopId, @RequestPart MultipartFile file) {
+		shopFacade.uploadShopLicense(shopId, file);
+	}
+
 	@PostMapping("accepted-payments")
 	public void saveAcceptedPayment(@PathVariable long shopId, @RequestBody ShopAcceptedPaymentDTO body) {
 		shopFacade.saveAcceptedPayment(shopId, body);
@@ -63,6 +68,11 @@ public class ShopController {
 	@DeleteMapping("accepted-payments/{id:\\d+}")
 	public void deleteAcceptedPayment(@PathVariable long shopId, @PathVariable long id) {
 		shopFacade.deleteAcceptedPayment(id);
+	}
+
+	@DeleteMapping("licenses/{id:\\d+}")
+	public void deleteShopLicense(@PathVariable long shopId, @PathVariable long id) {
+		shopFacade.deleteShopLicense(id, shopId);
 	}
 
 	@GetMapping
@@ -86,9 +96,12 @@ public class ShopController {
 	}
 
 	@GetMapping("monthly-sales")
-	public List<ShopMonthlySaleDTO> getMonthlySale(
-			@PathVariable long shopId, 
-			@RequestParam int year) {
+	public List<ShopMonthlySaleDTO> getMonthlySale(@PathVariable long shopId, @RequestParam int year) {
 		return shopFacade.getMonthlySale(shopId, year);
+	}
+
+	@GetMapping("licenses")
+	public List<ShopLicenseDTO> getShopLicenses(@PathVariable long shopId) {
+		return shopFacade.getShopLicenses(shopId);
 	}
 }

@@ -17,4 +17,6 @@ public class ShopUpdateInput {
 
     private String about;
     
+    private Long marketId;
+    
 }

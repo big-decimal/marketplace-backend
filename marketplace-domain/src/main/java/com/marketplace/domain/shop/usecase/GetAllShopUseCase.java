@@ -38,6 +38,11 @@ public class GetAllShopUseCase {
 			sq.addCriteria(c);
 		}
 
+		if (query.getMarketId() != null && query.getMarketId() > 0) {
+			var c = SearchCriteria.simple("market.id", Operator.EQUAL, query.getMarketId());
+			sq.addCriteria(c);
+		}
+
 		if (query.getFeatured() == Boolean.TRUE) {
 			var c = SearchCriteria.simple("featured", Operator.EQUAL, Boolean.TRUE);
 			sq.addCriteria(c);

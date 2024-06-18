@@ -18,4 +18,6 @@ public class ShopUpdateDTO {
     private String headline;
 
     private String about;
+    
+    private Long marketId;
 }

@@ -10,7 +10,7 @@ public class OrderMapper {
 	public static Order toDomain(OrderEntity entity) {
 		var order = toDomainCompat(entity);
 		order.setCustomer(UserMapper.toDomain(entity.getCustomer()));
-		order.setShop(ShopMapper.toDomainCompat(entity.getShop()));
+		order.setShop(ShopMapper.toDomain(entity.getShop()));
 		order.setItems(entity.getItems().stream().map(OrderItemMapper::toDomain).toList());
 		if (entity.getDelivery() != null) {
 			order.setDelivery(DeliveryDetailMapper.toDomain(entity.getDelivery()));

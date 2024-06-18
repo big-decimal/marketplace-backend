@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.marketplace.domain.ApplicationException;
 import com.marketplace.domain.Utils;
 import com.marketplace.domain.common.HTMLStringSanitizer;
+import com.marketplace.domain.market.MarketDao;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopUpdateInput;
 import com.marketplace.domain.shop.dao.ShopDao;
@@ -15,6 +16,9 @@ public class UpdateShopUseCase {
 
 	@Autowired
 	private ShopDao shopDao;
+	
+	@Autowired
+	private MarketDao marketDao;
 	
 	@Autowired
 	private HTMLStringSanitizer htmlStringSanitizer;
@@ -28,6 +32,10 @@ public class UpdateShopUseCase {
 
 		if (!Utils.hasText(rawSlug)) {
 			throw new ApplicationException("Invalid slug value");
+		}
+		
+		if (values.getMarketId() != null && !marketDao.existsById(values.getMarketId())) {
+			throw new ApplicationException("Market not found");
 		}
 		
 		var slug = Utils.generateSlug(rawSlug, v -> shopDao.existsByIdNotAndSlug(values.getShopId(), v));

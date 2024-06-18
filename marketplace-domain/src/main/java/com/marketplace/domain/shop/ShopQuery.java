@@ -12,6 +12,8 @@ public class ShopQuery {
     private String q;
     
     private Long cityId;
+    
+    private Long marketId;
 
     private Boolean expired;
     

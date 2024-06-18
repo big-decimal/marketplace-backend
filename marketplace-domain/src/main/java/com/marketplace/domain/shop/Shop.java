@@ -1,9 +1,11 @@
 package com.marketplace.domain.shop;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.marketplace.domain.Audit;
 import com.marketplace.domain.general.City;
+import com.marketplace.domain.market.Market;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +45,10 @@ public class Shop {
     private ShopContact contact;
     
     private City city;
+    
+    private Market market;
+    
+    private List<ShopLicense> licenses;
 
     private Audit audit = new Audit();
 

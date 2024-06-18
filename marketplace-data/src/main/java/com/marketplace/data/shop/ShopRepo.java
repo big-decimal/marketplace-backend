@@ -33,6 +33,8 @@ public interface ShopRepo extends JpaRepository<ShopEntity, Long>, JpaSpecificat
 	
 	boolean existsByIdAndExpiredAtGreaterThanEqualAndStatus(long shopId, long currentTime, Shop.Status status);
 	
+	boolean existsByMarket_Id(long marketId);
+	
 	long countByDeletedFalse();
 
 	@Modifying
