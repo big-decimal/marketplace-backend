@@ -66,3 +66,50 @@ jobs:
           mv /opt/marketplace/backend/tmp/marketplace-application /opt/marketplace/backend
           chmod +x /opt/marketplace/backend/marketplace-application
           sudo systemctl restart marketplace-backend
+
+  report:
+    if: ${{ always() }}
+    needs: [build, deploy]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send GitHub Action trigger data to Slack workflow
+      id: slack
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        payload: |
+          {
+          	"blocks": [
+          		{
+          			"type": "section",
+          			"text": {
+          				"text": "*Marketplace Backend* action report triggered by *_${{ github.actor }}_*.",
+          				"type": "mrkdwn"
+          			},
+          			"fields": [
+          				{
+          					"type": "mrkdwn",
+          					"text": "*Build*"
+          				},
+          				{
+          					"type": "mrkdwn",
+          					"text": "*Deploy*"
+          				},
+          				{
+          					"type": "plain_text",
+          					"text": "${{ jobs.build.result }}"
+          				},
+          				{
+          					"type": "plain_text",
+          					"text": "${{ jobs.deploy.result }}"
+          				}
+          			]
+          		}
+          	]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    
+ 
+ 
