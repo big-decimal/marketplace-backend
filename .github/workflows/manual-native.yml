@@ -86,25 +86,21 @@ jobs:
           			"text": {
           				"text": "*Marketplace Backend* action report triggered by *_${{ github.actor }}_*.",
           				"type": "mrkdwn"
-          			},
-          			"fields": [
-          				{
-          					"type": "mrkdwn",
-          					"text": "*Build*"
-          				},
-          				{
-          					"type": "mrkdwn",
-          					"text": "*Deploy*"
-          				},
-          				{
-          					"type": "plain_text",
-          					"text": "${{ needs.build.result }}"
-          				},
-          				{
-          					"type": "plain_text",
-          					"text": "${{ needs.deploy.result }}"
-          				}
-          			]
+          			}
+          		},
+              {
+          			"type": "section",
+          			"text": {
+          				"type": "mrkdwn",
+          				"text": "*Build*: ${{ needs.build.result }}"
+          			}
+          		},
+          		{
+          			"type": "section",
+          			"text": {
+          				"type": "mrkdwn",
+          				"text": "*Deploy*: ${{ needs.deploy.result }}"
+          			}
           		}
           	]
           }
