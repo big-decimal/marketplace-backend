@@ -12,32 +12,36 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ShopCreateDTO {
-	
+
 	@JsonIgnore
-    private long userId;
+	private long userId;
 
-    private String name;
+	private String name;
 
-    private String slug;
+	private String slug;
 
-    private String headline;
+	private String headline;
 
-    private String about;
+	private String about;
 
-    private String address;
-    
-    private String phone;
-    
-    private boolean cashOnDelivery;
-    
-    private boolean bankTransfer;
-    
-    private List<ShopAcceptedPaymentDTO> acceptedPayments;
-    
-    private long cityId;
+	private String address;
 
-    private MultipartFile logo;
+	private String phone;
 
-    private MultipartFile cover;
+	private boolean cashOnDelivery;
+
+	private boolean bankTransfer;
+
+	private List<ShopAcceptedPaymentDTO> acceptedPayments;
+
+	private long cityId;
+
+	private Long marketId;
+
+	private MultipartFile logo;
+
+	private MultipartFile cover;
+
+	private List<MultipartFile> licenses;
 
 }

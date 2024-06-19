@@ -15,10 +15,9 @@ import com.marketplace.api.PageDataDTO;
 import com.marketplace.api.vendor.shop.ShopMemberDTO;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.Shop.Status;
+import com.marketplace.domain.shop.ShopQuery;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import com.marketplace.domain.shop.ShopQuery;
 
 @RestController
 @RequestMapping("api/v1/admin/shops")
@@ -71,6 +70,7 @@ public class ShopController {
             @RequestParam(required = false) Boolean expired,
             @RequestParam(required = false) Boolean featured,
             @RequestParam(required = false, name = "city-id") Long cityId,
+            @RequestParam(required = false, name = "market-id") Long marketId,
             @RequestParam(required = false) Shop.Status status,
             @RequestParam(required = false) Integer page) {
     	
@@ -79,6 +79,7 @@ public class ShopController {
                 .expired(expired)
                 .status(status)
                 .cityId(cityId)
+				.marketId(marketId)
                 .featured(featured)
                 .page(page)
                 .build();

@@ -12,47 +12,49 @@ import com.marketplace.domain.shop.ShopUpdateInput;
 
 public interface ShopDao {
 
-    long create(ShopCreateInput data);
+	long create(ShopCreateInput data);
 
-    Shop update(ShopUpdateInput general);
-    
-    void saveContact(ShopContactInput values);
+	Shop update(ShopUpdateInput general);
 
-    void updateLogo(long shopId, String logo);
+	void saveContact(ShopContactInput values);
 
-    void updateCover(long shopId, String cover);
-    
-    void updateStatus(long shopId, Shop.Status status);
-    
-    void updateExpiredAt(long shopId, long value);
-    
-    void updateFeatured(long shopId, boolean value);
-    
-    boolean existsById(long id);
+	void updateLogo(long shopId, String logo);
 
-    boolean existsBySlug(String slug);
-    
-    boolean existsByIdNotAndSlug(long id, String slug);
-    
-    boolean existsByIdAndExpiredAtGreaterThanAndStatusActive(long shopId, long currentTime);
-    
-    long count();
-    
-    Shop.Status getStatus(long shopId);
+	void updateCover(long shopId, String cover);
 
-    String getLogo(long shopId);
+	void updateStatus(long shopId, Shop.Status status);
 
-    String getCover(long shopId);
-    
-    long getExpiredAt(long shopId);
+	void updateExpiredAt(long shopId, long value);
 
-    Shop findById(long id);
+	void updateFeatured(long shopId, boolean value);
 
-    Shop findBySlug(String slug);
+	boolean existsById(long id);
 
-    List<Shop> getShopHints(String q, int limit);
+	boolean existsBySlug(String slug);
 
-    PageData<Shop> findByUser(long userId, PageQuery pageQuery);
+	boolean existsByIdNotAndSlug(long id, String slug);
 
-    PageData<Shop> findAll(SearchQuery searchQuery);
+	boolean existsByIdAndExpiredAtGreaterThanAndStatusActive(long shopId, long currentTime);
+
+	boolean existsByMarket(long marketId);
+
+	long count();
+
+	Shop.Status getStatus(long shopId);
+
+	String getLogo(long shopId);
+
+	String getCover(long shopId);
+
+	long getExpiredAt(long shopId);
+
+	Shop findById(long id);
+
+	Shop findBySlug(String slug);
+
+	List<Shop> getShopHints(String q, int limit);
+
+	PageData<Shop> findByUser(long userId, PageQuery pageQuery);
+
+	PageData<Shop> findAll(SearchQuery searchQuery);
 }

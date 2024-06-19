@@ -11,6 +11,7 @@ import com.marketplace.api.admin.category.CategoryDTO;
 import com.marketplace.api.admin.category.CategoryEditDTO;
 import com.marketplace.api.admin.general.DashboardDataDTO;
 import com.marketplace.api.admin.general.SiteSettingDTO;
+import com.marketplace.api.admin.market.MarketEditDTO;
 import com.marketplace.api.admin.shop.ShopDTO;
 import com.marketplace.api.admin.subscription.ShopSubscriptionDTO;
 import com.marketplace.api.admin.subscription.ShopSubscriptionTransactionDTO;
@@ -28,6 +29,7 @@ import com.marketplace.domain.category.CategoryInput;
 import com.marketplace.domain.general.City;
 import com.marketplace.domain.general.DashboardData;
 import com.marketplace.domain.general.SiteSetting;
+import com.marketplace.domain.market.MarketInput;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopMember;
 import com.marketplace.domain.subscription.ShopSubscription;
@@ -52,6 +54,8 @@ public interface AdminDataMapper extends CommonDataMapper {
 	CategoryInput map(CategoryEditDTO source);
 	
 	City map(CityDTO source);
+	
+	MarketInput map(MarketEditDTO source);
 	
 	DashboardDataDTO map(DashboardData source);
 	

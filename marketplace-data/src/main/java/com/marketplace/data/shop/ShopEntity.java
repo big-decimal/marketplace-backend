@@ -5,6 +5,7 @@ import java.util.List;
 import com.marketplace.data.AuditingEntity;
 import com.marketplace.data.discount.DiscountEntity;
 import com.marketplace.data.general.CityEntity;
+import com.marketplace.data.market.MarketEntity;
 import com.marketplace.data.review.ShopReviewEntity;
 import com.marketplace.domain.Constants;
 import com.marketplace.domain.shop.Shop;
@@ -53,32 +54,35 @@ public class ShopEntity extends AuditingEntity {
 
 //	@Column(columnDefinition = "TEXT")
 	@Lob
-    @Basic(fetch = FetchType.LAZY)
+	@Basic(fetch = FetchType.LAZY)
 	private String about;
 
 	private boolean featured;
-	
+
 	private boolean deleted;
-    
-    private long expiredAt;
-    
-    @Enumerated(EnumType.STRING)
-    private Shop.Status status;
+
+	private long expiredAt;
+
+	@Enumerated(EnumType.STRING)
+	private Shop.Status status;
 
 	@Version
 	private long version;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private ShopContactEntity contact;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private ShopSettingEntity setting;
-	
+
 	@OneToOne(mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private ShopRatingEntity rating;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    private CityEntity city;
+	private CityEntity city;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private MarketEntity market;
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ShopMemberEntity> members;
@@ -88,9 +92,12 @@ public class ShopEntity extends AuditingEntity {
 
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ShopReviewEntity> reviews;
-	
+
 	@OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<ShopAcceptedPaymentEntity> payments;
+
+	@OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<ShopLicenseEntity> licenses;
 
 	public ShopEntity() {
 		this.status = Shop.Status.PENDING;

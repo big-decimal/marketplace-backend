@@ -11,6 +11,7 @@ import com.marketplace.data.JpaSpecificationBuilder;
 import com.marketplace.data.PageDataMapper;
 import com.marketplace.data.PageQueryMapper;
 import com.marketplace.data.general.CityRepo;
+import com.marketplace.data.market.MarketRepo;
 import com.marketplace.data.shop.view.ShopCoverView;
 import com.marketplace.data.shop.view.ShopExpiredAtView;
 import com.marketplace.data.shop.view.ShopLogoView;
@@ -37,9 +38,12 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Autowired
 	private ShopContactRepo shopContactRepo;
-	
+
 	@Autowired
 	private CityRepo cityRepo;
+
+	@Autowired
+	private MarketRepo marketRepo;
 
 	@Override
 	public long create(ShopCreateInput values) {
@@ -52,8 +56,12 @@ public class ShopDaoImpl implements ShopDao {
 		entity.setSlug(values.getSlug());
 		entity.setCity(cityRepo.getReferenceById(values.getCityId()));
 
+		if (values.getMarketId() != null) {
+			entity.setMarket(marketRepo.getReferenceById(values.getMarketId()));
+		}
+
 		var result = shopRepo.save(entity);
-		
+
 		return result.getId();
 	}
 
@@ -66,9 +74,15 @@ public class ShopDaoImpl implements ShopDao {
 		entity.setHeadline(values.getHeadline());
 		entity.setAbout(values.getAbout());
 		entity.setSlug(values.getSlug());
+		
+		if (values.getMarketId() != null) {
+			entity.setMarket(marketRepo.getReferenceById(values.getMarketId()));
+		} else {
+			entity.setMarket(null);
+		}
 
 		var result = shopRepo.save(entity);
-		
+
 		return ShopMapper.toDomainCompat(result);
 	}
 
@@ -82,9 +96,9 @@ public class ShopDaoImpl implements ShopDao {
 		entity.setLatitude(values.getLatitude());
 		entity.setLongitude(values.getLongitude());
 		entity.setShop(shopRepo.getReferenceById(values.getShopId()));
-		
+
 		shopContactRepo.save(entity);
-		
+
 		shopRepo.updateCity(values.getShopId(), cityRepo.getReferenceById(values.getCityId()));
 	}
 
@@ -107,7 +121,7 @@ public class ShopDaoImpl implements ShopDao {
 	public void updateExpiredAt(long shopId, long value) {
 		shopRepo.updateExpiredAt(shopId, value);
 	}
-	
+
 	@Override
 	public void updateFeatured(long shopId, boolean value) {
 		shopRepo.updateFeatured(shopId, value);
@@ -122,7 +136,7 @@ public class ShopDaoImpl implements ShopDao {
 	public boolean existsBySlug(String slug) {
 		return shopRepo.existsBySlugAndDeletedFalse(slug);
 	}
-	
+
 	@Override
 	public boolean existsByIdNotAndSlug(long id, String slug) {
 		return shopRepo.existsByIdNotAndSlug(id, slug);
@@ -131,6 +145,11 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public boolean existsByIdAndExpiredAtGreaterThanAndStatusActive(long shopId, long currentTime) {
 		return shopRepo.existsByIdAndExpiredAtGreaterThanEqualAndStatus(shopId, currentTime, Shop.Status.APPROVED);
+	}
+
+	@Override
+	public boolean existsByMarket(long marketId) {
+		return shopRepo.existsByMarket_Id(marketId);
 	}
 
 	@Override
@@ -147,7 +166,7 @@ public class ShopDaoImpl implements ShopDao {
 	public String getLogo(long shopId) {
 		return shopRepo.getShopById(shopId, ShopLogoView.class).map(ShopLogoView::getLogo).orElse(null);
 	}
-	
+
 	@Override
 	public long getExpiredAt(long shopId) {
 		return shopRepo.getShopById(shopId, ShopExpiredAtView.class).map(ShopExpiredAtView::getExpiredAt).orElse(0L);
@@ -186,9 +205,9 @@ public class ShopDaoImpl implements ShopDao {
 	public PageData<Shop> findAll(SearchQuery searchQuery) {
 		var spec = JpaSpecificationBuilder.build(searchQuery.getCriterias(), ShopEntity.class);
 
-        var pageable = PageQueryMapper.fromPageQuery(searchQuery.getPageQuery());
+		var pageable = PageQueryMapper.fromPageQuery(searchQuery.getPageQuery());
 
-        var pageResult = spec != null ? shopRepo.findAll(spec, pageable) : shopRepo.findAll(pageable);
+		var pageResult = spec != null ? shopRepo.findAll(spec, pageable) : shopRepo.findAll(pageable);
 		return PageDataMapper.map(pageResult, e -> ShopMapper.toDomainCompat(e));
 	}
 

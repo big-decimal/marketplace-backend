@@ -7,7 +7,7 @@ import com.marketplace.domain.shop.dao.ShopMemberDao;
 
 @Component
 public class Authz {
-	
+
 	@Autowired
 	private ShopMemberDao shopMemberDao;
 
@@ -15,8 +15,16 @@ public class Authz {
 		if (shopId == null || shopId == 0) {
 			return false;
 		}
-		var userId = AuthenticationUtil.getAuthenticatedUserId();
-		var result = shopMemberDao.existsByShopAndUser(shopId, userId);
+		var user = AuthenticationUtil.getAuthenticatedUser();
+		if (user == null) {
+			return false;
+		}
+
+		if (user.isAdmin()) {
+			return true;
+		}
+
+		var result = shopMemberDao.existsByShopAndUser(shopId, user.getId());
 		return result;
 	}
 }

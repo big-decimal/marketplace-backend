@@ -12,6 +12,7 @@ import com.marketplace.api.consumer.category.CategoryDTO;
 import com.marketplace.api.consumer.general.CityDTO;
 import com.marketplace.api.consumer.general.HomeDataDTO;
 import com.marketplace.api.consumer.general.SiteAssetsDTO;
+import com.marketplace.api.consumer.market.MarketDTO;
 import com.marketplace.api.consumer.order.OrderCreateDTO;
 import com.marketplace.api.consumer.order.OrderDTO;
 import com.marketplace.api.consumer.product.ProductDTO;
@@ -34,6 +35,7 @@ import com.marketplace.domain.category.Category;
 import com.marketplace.domain.general.City;
 import com.marketplace.domain.general.HomeData;
 import com.marketplace.domain.general.SiteSettingAssets;
+import com.marketplace.domain.market.Market;
 import com.marketplace.domain.order.Order;
 import com.marketplace.domain.order.OrderCreateInput;
 import com.marketplace.domain.product.Product;
@@ -61,62 +63,66 @@ public interface ConsumerDataMapper extends CommonDataMapper {
 	CategoryDTO map(Category source);
 
 	List<CategoryDTO> mapCategoryList(List<Category> source);
-	
+
 	CityDTO map(City source);
-	
+
 	List<CityDTO> mapCityList(List<City> source);
-	
+
+	MarketDTO map(Market source);
+
+	PageDataDTO<MarketDTO> mapMarketPage(PageData<Market> source);
+
 	HomeDataDTO map(HomeData source);
-	
+
 	SiteAssetsDTO map(SiteSettingAssets source);
 
 	ProductDTO map(Product source);
-	
+
 	ProductFilterDTO map(ProductFilter source);
-	
+
 	List<ProductDTO> mapProductList(List<Product> source);
-	
+
 	PageDataDTO<ProductDTO> mapProductPage(PageData<Product> source);
-	
+
 	ShopDTO map(Shop source);
-	
+
 	ShopSettingDTO map(ShopSetting source);
-	
+
 	ShopAcceptedPaymentDTO map(ShopAcceptedPayment source);
-	
+
 	ShopContactDTO map(ShopContact source);
-	
+
 	PageDataDTO<ShopDTO> mapShopPage(PageData<Shop> source);
-	
+
 	List<ShopAcceptedPaymentDTO> mapShopAcceptedPaymentList(List<ShopAcceptedPayment> source);
-	
+
 	ShopReviewDTO map(ShopReview source);
-	
+
 	PageDataDTO<ShopReviewDTO> mapShopReviewPage(PageData<ShopReview> source);
-	
+
 	CartItemDTO map(CartItem source);
-	
+
 	List<CartItemDTO> mapCartItemList(List<CartItem> source);
-	
+
 	SubscriptionPlanDTO map(SubscriptionPlan source);
-	
+
 	List<SubscriptionPlanDTO> mapSubscriptionPlanList(List<SubscriptionPlan> source);
-	
+
 	ProfileStatisticDTO map(ProfileStatistic source);
-	
+
 	UserDTO map(User user);
-	
+
 	@Mapping(target = "payment.file", ignore = true)
 	OrderDTO map(Order order);
-	
+
 	PageDataDTO<OrderDTO> mapOrderPage(PageData<Order> source);
-	
+
 	CartItemInput map(CartItemEditDTO source);
-	
+
 	ShopReviewInput map(ShopReviewEditDTO source);
-	
+
 	OrderCreateInput map(OrderCreateDTO source);
-	
+
 	ProfileUpdateInput map(UserEditDTO source);
-	
+
 }

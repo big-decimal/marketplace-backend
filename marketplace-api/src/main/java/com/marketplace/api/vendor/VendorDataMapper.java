@@ -17,6 +17,7 @@ import com.marketplace.api.vendor.shop.ShopContactDTO;
 import com.marketplace.api.vendor.shop.ShopContactUpdateDTO;
 import com.marketplace.api.vendor.shop.ShopCreateDTO;
 import com.marketplace.api.vendor.shop.ShopDTO;
+import com.marketplace.api.vendor.shop.ShopLicenseDTO;
 import com.marketplace.api.vendor.shop.ShopMemberDTO;
 import com.marketplace.api.vendor.shop.ShopMonthlySaleDTO;
 import com.marketplace.api.vendor.shop.ShopSettingDTO;
@@ -36,6 +37,7 @@ import com.marketplace.domain.shop.ShopAcceptedPaymentInput;
 import com.marketplace.domain.shop.ShopContact;
 import com.marketplace.domain.shop.ShopContactInput;
 import com.marketplace.domain.shop.ShopCreateInput;
+import com.marketplace.domain.shop.ShopLicense;
 import com.marketplace.domain.shop.ShopMember;
 import com.marketplace.domain.shop.ShopMonthlySale;
 import com.marketplace.domain.shop.ShopSetting;
@@ -103,8 +105,12 @@ public interface VendorDataMapper extends CommonDataMapper {
 	
 	List<ShopSubscriptionDTO> mapShopSubscriptionList(List<ShopSubscription> source);
 	
+	ShopLicenseDTO map(ShopLicense source);
+	
+	List<ShopLicenseDTO> mapShopLicenseList(List<ShopLicense> source);
+	
 	SubscriptionPromoDTO map(SubscriptionPromo source);
 	
 	RenewShopSubscriptionInput map(RenewSubscriptionDTO source);
-
+	
 }

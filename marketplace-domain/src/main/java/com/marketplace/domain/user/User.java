@@ -11,10 +11,11 @@ import lombok.Setter;
 @Setter
 public class User {
 
-    public enum Role {
-        USER, ADMIN, OWNER
-    }
-    
+	public enum Role {
+		USER, ADMIN, OWNER
+	}
+
+	// @formatter:off
     public enum Permission {
 		DASHBOARD_READ,
 		BANNER_READ, 
@@ -23,6 +24,8 @@ public class User {
 		CATEGORY_WRITE, 
 		CITY_READ, 
 		CITY_WRITE, 
+		MARKET_READ,
+		MARKET_WRITE,
 		SHOP_READ, 
 		SHOP_WRITE, 
 		PRODUCT_READ, 
@@ -36,25 +39,30 @@ public class User {
 		SUBSCRIPTION_HISTORY_READ,
 		SITE_SETTING_WRITE,
 	}
+    // @formatter:on
 
-    private long id;
-    
-    private String uid;
+	private long id;
 
-    private String name;
+	private String uid;
 
-    private String phone;
+	private String name;
 
-    private String email;
+	private String phone;
 
-    private String image;
+	private String email;
 
-    private Role role;
+	private String image;
 
-    private boolean disabled;
-    
-    private List<User.Permission> permissions;
+	private Role role;
 
-    private Audit audit = new Audit();
+	private boolean disabled;
+
+	private List<User.Permission> permissions;
+
+	private Audit audit = new Audit();
+
+	public boolean isAdmin() {
+		return role == User.Role.ADMIN || role == User.Role.OWNER;
+	}
 
 }

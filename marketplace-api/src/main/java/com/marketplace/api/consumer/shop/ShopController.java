@@ -43,10 +43,12 @@ public class ShopController {
 	public PageDataDTO<ShopDTO> findAll(
 			@RequestParam(required = false) String q,
 			@RequestParam(required = false, name = "city-id") Long cityId,
+			@RequestParam(required = false, name = "market-id") Long marketId,
 			@RequestParam(required = false) Integer page) {
 		var query = ShopQuery.builder()
 				.q(q)
 				.cityId(cityId)
+				.marketId(marketId)
 				.status(Shop.Status.APPROVED)
 				.expired(false)
 				.page(page)

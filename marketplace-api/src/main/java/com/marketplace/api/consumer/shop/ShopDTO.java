@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.marketplace.api.AbstractImageFieldSerializer.ShopImageSerializer;
 import com.marketplace.api.consumer.general.CityDTO;
+import com.marketplace.api.consumer.market.MarketDTO;
 import com.marketplace.domain.shop.Shop;
 
 import lombok.Getter;
@@ -38,6 +39,8 @@ public class ShopDTO {
     private ShopContactDTO contact;
     
     private CityDTO city;
+    
+    private MarketDTO market;
     
     private long expiredAt;
 }
