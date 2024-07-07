@@ -43,19 +43,21 @@ public class User {
 
 	private long id;
 
-	private String uid;
-
 	private String name;
 
 	private String phone;
 
 	private String email;
+	
+	private String password;
 
 	private String image;
 
 	private Role role;
 
 	private boolean disabled;
+	
+	private boolean phoneNumberVerified;
 
 	private List<User.Permission> permissions;
 

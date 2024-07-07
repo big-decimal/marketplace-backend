@@ -9,7 +9,7 @@ import com.marketplace.domain.user.ProfileUpdateInput;
 import com.marketplace.domain.user.dao.UserDao;
 
 @Component
-public class UpdateUserUseCase {
+public class UpdateProfileUseCase {
 
 	@Autowired
     private UserDao dao;
@@ -23,9 +23,9 @@ public class UpdateUserUseCase {
             throw new ApplicationException("Required user name");
         }
         
-        if (Utils.hasText(values.getPhone()) && !Utils.isPhoneNumber(values.getPhone())) {
-            throw new ApplicationException("Required valid phone number");
-        }
+//        if (Utils.hasText(values.getPhone()) && !Utils.isPhoneNumber(values.getPhone())) {
+//            throw new ApplicationException("Required valid phone number");
+//        }
 
         dao.update(values);
     }

@@ -190,8 +190,18 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public List<Shop> getShopHints(String q, int limit) {
 		String ql = "%" + q + "%";
-		return shopRepo.findShopHints(ql, ql, PageRequest.of(0, limit)).stream().map(e -> ShopMapper.toDomainCompat(e))
-				.collect(Collectors.toList());
+		return shopRepo.findShopHints(ql, ql, PageRequest.of(0, limit)).stream()
+				.map(e -> ShopMapper.toDomainCompat(e))
+				.toList();
+	}
+	
+	@Override
+	public List<Shop> getTopFeaturedShops() {
+		long currentTime = System.currentTimeMillis();
+    	var status = Shop.Status.APPROVED;
+		return shopRepo.findByStatusAndFeaturedTrueAndExpiredAtGreaterThanOrderByCreatedAtDesc(status, currentTime).stream()
+				.map(ShopMapper::toDomainCompat)
+				.toList();
 	}
 
 	@Override

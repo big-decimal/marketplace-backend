@@ -1,5 +1,6 @@
 package com.marketplace.api.vendor.shop;
 
+import com.marketplace.api.AuditDTO;
 import com.marketplace.api.consumer.user.UserDTO;
 import com.marketplace.domain.shop.ShopMember;
 
@@ -13,4 +14,6 @@ public class ShopMemberDTO {
     private ShopMember.Role role;
 
     private UserDTO member;
+    
+    private AuditDTO audit;
 }

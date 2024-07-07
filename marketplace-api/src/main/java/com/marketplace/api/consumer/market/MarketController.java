@@ -2,6 +2,7 @@ package com.marketplace.api.consumer.market;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,11 @@ public class MarketController {
 
 	@Autowired
 	private MarketControllerFacade marketControllerFacade;
+	
+	@GetMapping("{slug}")
+	public MarketDTO findBySlug(@PathVariable String slug) {
+		return marketControllerFacade.findBySlug(slug);
+	}
 
 	@GetMapping
 	public PageDataDTO<MarketDTO> findAll(

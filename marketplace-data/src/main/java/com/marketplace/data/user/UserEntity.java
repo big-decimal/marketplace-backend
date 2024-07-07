@@ -28,9 +28,6 @@ public class UserEntity extends AuditingEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@Column(unique = true, nullable = false)
-	private String uid;
 
 	@Column(columnDefinition = "TEXT")
 	private String name;
@@ -38,14 +35,19 @@ public class UserEntity extends AuditingEntity {
 	private String phone;
 
 	private String email;
+	
+	private String password;
 
 	@Column(columnDefinition = "TEXT")
 	private String image;
 
 	@Enumerated(EnumType.STRING)
 	private User.Role role;
-
+	
 	private boolean disabled;
+	
+	@Column(name = "phone_number_verified")
+	private boolean phoneNumberVerified;
 	
 	private boolean deleted;
 	

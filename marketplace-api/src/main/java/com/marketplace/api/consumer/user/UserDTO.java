@@ -28,5 +28,7 @@ public class UserDTO {
 
     private boolean disabled;
     
+    private boolean phoneNumberVerified;
+    
     private List<User.Permission> permissions;
 }

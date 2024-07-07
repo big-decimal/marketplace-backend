@@ -10,12 +10,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.marketplace.api.MultipartFileConverter;
 import com.marketplace.api.vendor.VendorDataMapper;
 import com.marketplace.domain.order.usecase.GetPendingOrderCountByShopUseCase;
+import com.marketplace.domain.shop.dao.ShopMemberDao;
+import com.marketplace.domain.shop.usecase.CreateShopMemberUseCase;
 import com.marketplace.domain.shop.usecase.CreateShopUseCase;
 import com.marketplace.domain.shop.usecase.DeleteShopAcceptedPaymentUseCase;
 import com.marketplace.domain.shop.usecase.DeleteShopLicenseUseCase;
+import com.marketplace.domain.shop.usecase.DeleteShopMemberUseCase;
 import com.marketplace.domain.shop.usecase.GetMonthlySaleByShopUseCase;
 import com.marketplace.domain.shop.usecase.GetShopByIdUseCase;
 import com.marketplace.domain.shop.usecase.GetShopLicensesUseCase;
+import com.marketplace.domain.shop.usecase.GetShopMembersByShopUseCase;
 import com.marketplace.domain.shop.usecase.GetShopSettingUseCase;
 import com.marketplace.domain.shop.usecase.GetShopStatisticUseCase;
 import com.marketplace.domain.shop.usecase.SaveShopAcceptedPaymentUseCase;
@@ -78,6 +82,18 @@ public class ShopControllerFacade {
 	private GetShopLicensesUseCase getShopLicensesUseCase;
 
 	@Autowired
+	private GetShopMembersByShopUseCase getShopMembersByShopUseCase;
+	
+	@Autowired
+	private CreateShopMemberUseCase createShopMemberUseCase;
+	
+	@Autowired
+	private DeleteShopMemberUseCase deleteShopMemberUseCase;
+
+	@Autowired
+	private ShopMemberDao shopMemberDao;
+
+	@Autowired
 	private VendorDataMapper mapper;
 
 	public void create(ShopCreateDTO values) {
@@ -122,6 +138,14 @@ public class ShopControllerFacade {
 	public void deleteAcceptedPayment(long id) {
 		deleteShopAcceptedPaymentUseCase.apply(id);
 	}
+	
+	public void createShopMember(long shopId, String phone) {
+		createShopMemberUseCase.apply(shopId, phone);
+	}
+	
+	public void deleteShopMember(long shopId, long userId) {
+		deleteShopMemberUseCase.apply(shopId, userId);
+	}
 
 	public long getPendingOrderCount(long shopId) {
 		return getPendingOrderCountByShopUseCase.apply(shopId);
@@ -150,5 +174,15 @@ public class ShopControllerFacade {
 	public List<ShopLicenseDTO> getShopLicenses(long shopId) {
 		var source = getShopLicensesUseCase.apply(shopId);
 		return mapper.mapShopLicenseList(source);
+	}
+
+	public ShopMemberDTO getShopMember(long shopId, long userId) {
+		var source = shopMemberDao.findByShopAndUser(shopId, userId);
+		return mapper.map(source);
+	}
+
+	public List<ShopMemberDTO> getShopMembers(long shopId) {
+		var source = getShopMembersByShopUseCase.apply(shopId);
+		return mapper.map(source);
 	}
 }

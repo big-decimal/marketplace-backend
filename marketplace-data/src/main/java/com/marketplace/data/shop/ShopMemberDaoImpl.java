@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.marketplace.data.SortQueryMapper;
 import com.marketplace.data.user.UserRepo;
+import com.marketplace.domain.common.SortQuery;
 import com.marketplace.domain.shop.ShopMember;
 import com.marketplace.domain.shop.ShopMemberInput;
 import com.marketplace.domain.shop.dao.ShopMemberDao;
@@ -59,8 +61,9 @@ public class ShopMemberDaoImpl implements ShopMemberDao {
     }
     
     @Override
-    public List<ShopMember> findByShop(long shopId) {
-    	return shopMemberRepo.findByShopId(shopId).stream()
+    public List<ShopMember> findByShop(long shopId, SortQuery sortQuery) {
+    	var sort = SortQueryMapper.fromQuery(sortQuery);
+    	return shopMemberRepo.findByShopId(shopId, sort).stream()
     			.map(ShopMemberMapper::toDomain)
     			.toList();
     }

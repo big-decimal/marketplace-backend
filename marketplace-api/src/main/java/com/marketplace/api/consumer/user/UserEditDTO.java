@@ -14,7 +14,7 @@ public class UserEditDTO {
 
     private String name;
 
-    private String phone;
+//    private String phone;
 
 //    private String email;
 

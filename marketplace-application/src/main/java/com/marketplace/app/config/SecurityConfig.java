@@ -15,15 +15,17 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.marketplace.app.common.AppProperties;
-import com.marketplace.app.security.CustomJwtAuthenticationConverter;
+import com.marketplace.app.security.AccessTokenAuthenticationFilter;
 import com.marketplace.app.security.CustomPermissionEvaluator;
-import com.marketplace.app.security.FirebaseUserAdapter;
 import com.marketplace.app.security.Http401UnauthorizedEntryPoint;
 import com.marketplace.domain.shop.dao.ShopMemberDao;
 import com.marketplace.domain.user.dao.UserDao;
@@ -34,6 +36,11 @@ import com.marketplace.domain.user.dao.UserDao;
 public class SecurityConfig {
 
 	// private static final String COGNITO_GROUPS = "cognito:groups";
+	
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
 
 	@Bean
 	static MethodSecurityExpressionHandler methodSecurityExpressionHandler(ShopMemberDao shopMemberDao, UserDao userDao) {
@@ -45,6 +52,16 @@ public class SecurityConfig {
 	@Bean
 	@Order(1)
 	SecurityFilterChain publicApiFilterChain(HttpSecurity http) throws Exception {
+		String[] authPaths = {
+			"/api/**/auth/sign-in",
+			"/api/**/auth/sign-up",
+			"/api/**/auth/refresh",
+			"/api/**/auth/request-otp",
+			"/api/**/auth/verify-otp",
+			"/api/**/auth/reset-password",
+			"/api/**/auth/exists-user",
+		};
+		
 		http
 				.cors(Customizer.withDefaults())
 				.csrf(c -> c.disable())
@@ -54,7 +71,8 @@ public class SecurityConfig {
 				.securityMatchers(mathers -> {
 					mathers
 						.requestMatchers(HttpMethod.GET, "/api/**/content/**")
-						.requestMatchers(HttpMethod.POST, "/api/**/payment/notify");
+						.requestMatchers(HttpMethod.POST, "/api/**/payment/notify")
+						.requestMatchers(authPaths);
 				});
 
 		return http.build();
@@ -64,14 +82,14 @@ public class SecurityConfig {
 	@Order(2)
 	SecurityFilterChain privateApiFilterChain(
 			HttpSecurity http, 
-			UserDao userDao,
-			FirebaseUserAdapter firebaseUserAdapter) throws Exception {
+			AccessTokenAuthenticationFilter tokenFilter) throws Exception {
 		http
 				.cors(Customizer.withDefaults())
 				.csrf(c -> c.disable())
 				.sessionManagement(sm -> {
 					sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 				})
+				.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
 				.securityMatcher("/api/**")
 				.authorizeHttpRequests(authz -> {
 					authz
@@ -80,14 +98,14 @@ public class SecurityConfig {
 				})
 				.exceptionHandling(ex -> {
 					ex.authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
-				})
-				.oauth2ResourceServer(oauth2 -> {
-					oauth2
-						.jwt(jwt -> {
-							jwt.jwtAuthenticationConverter(new CustomJwtAuthenticationConverter(userDao, firebaseUserAdapter));
-						})
-						.authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
 				});
+//				.oauth2ResourceServer(oauth2 -> {
+//					oauth2
+//						.jwt(jwt -> {
+//							jwt.jwtAuthenticationConverter(new CustomJwtAuthenticationConverter(userDao, firebaseUserAdapter));
+//						})
+//						.authenticationEntryPoint(new Http401UnauthorizedEntryPoint());
+//				});
 
 		return http.build();
 	}

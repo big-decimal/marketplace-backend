@@ -24,7 +24,7 @@ import com.marketplace.domain.user.User;
 import com.marketplace.domain.user.usecase.GetProfileStatisticUseCase;
 import com.marketplace.domain.user.usecase.GetUserByIdUseCase;
 import com.marketplace.domain.user.usecase.GetUserPermissionsUseCase;
-import com.marketplace.domain.user.usecase.UpdateUserUseCase;
+import com.marketplace.domain.user.usecase.UpdateProfileUseCase;
 import com.marketplace.domain.user.usecase.UploadUserImageUseCase;
 
 @Component
@@ -34,7 +34,7 @@ public class ProfileControllerFacade {
 	private GetUserByIdUseCase getUserByIdUseCase;
 
 	@Autowired
-	private UpdateUserUseCase updateUserUseCase;
+	private UpdateProfileUseCase updateProfileUseCase;
 	
 	@Autowired
 	private UploadUserImageUseCase uploadUserImageUseCase;
@@ -67,7 +67,7 @@ public class ProfileControllerFacade {
 	private ConsumerDataMapper mapper;
 
 	public void update(UserEditDTO user) {
-		updateUserUseCase.apply(mapper.map(user));
+		updateProfileUseCase.apply(mapper.map(user));
 	}
 	
 	public void uploadImage(long userId, MultipartFile file) {

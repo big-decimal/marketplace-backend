@@ -24,7 +24,7 @@ public class UserController {
 
 	@Autowired
 	private UserControllerFacade userFacade;
-	
+
 	@PreAuthorize("hasAuthority('ROLE_OWNER')")
 	@PutMapping("{userId:\\d+}/grant-admin")
 	public void grantAdmin(@PathVariable long userId) {
@@ -34,30 +34,49 @@ public class UserController {
 		userFacade.updateRole(userId, User.Role.ADMIN);
 	}
 
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
+	@PutMapping("{userId:\\d+}/update-phone-number")
+	public void updatePhoneNumber(@PathVariable long userId, @RequestParam String phone) {
+		if (userId == AuthenticationUtil.getAuthenticatedUserId()) {
+			throw new ApplicationException("Unable to update phone number");
+		}
+		userFacade.updatePhoneNumber(userId, phone);
+	}
+
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
+	@PutMapping("{userId:\\d+}/update-password")
+	public void updatePassword(@PathVariable long userId, @RequestParam String password) {
+		if (userId == AuthenticationUtil.getAuthenticatedUserId()) {
+			throw new ApplicationException("Unable to update password");
+		}
+		userFacade.updatePassword(userId, password);
+	}
+
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
+	@PutMapping("{userId:\\d+}/verify-phone-number")
+	public void verifyPhone(@PathVariable long userId) {
+		if (userId == AuthenticationUtil.getAuthenticatedUserId()) {
+			throw new ApplicationException("Unable to update password");
+		}
+		userFacade.verifyPhoneNumber(userId);
+	}
+
 	@PreAuthorize("hasPermission('USER', 'READ')")
 	@GetMapping("{userId:\\d+}")
 	public UserDTO getUser(@PathVariable long userId) {
 		return userFacade.findById(userId);
 	}
-	
+
 	@PreAuthorize("hasPermission('USER', 'READ')")
 	@GetMapping
-	public PageDataDTO<UserDTO> findAll(
-			@RequestParam(required = false) String name,
-			@RequestParam(required = false) String phone,
-			@RequestParam(required = false) String email,
+	public PageDataDTO<UserDTO> findAll(@RequestParam(required = false) String name,
+			@RequestParam(required = false) String phone, @RequestParam(required = false) String email,
 			@RequestParam(required = false) Boolean verified,
 			@RequestParam(required = false, name = "staff-only") Boolean staffOnly,
 			@RequestParam(required = false) Integer page) {
 
-		var query = UserQuery.builder()
-				.name(name)
-				.phone(phone)
-				.email(email)
-				.staffOnly(staffOnly)
-				.verified(verified)
-				.page(page)
-				.build();
+		var query = UserQuery.builder().name(name).phone(phone).email(email).staffOnly(staffOnly).verified(verified)
+				.page(page).build();
 
 		return userFacade.findAll(query);
 	}

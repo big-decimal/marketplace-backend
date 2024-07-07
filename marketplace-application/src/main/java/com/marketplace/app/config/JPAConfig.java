@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.marketplace.api.AuthenticationUtil;
-import com.marketplace.domain.user.User;
 
 @Configuration
 @EntityScan(basePackages = { "com.marketplace.data" })
@@ -21,6 +20,6 @@ public class JPAConfig {
     @Bean
     AuditorAware<String> auditorProvider() {
         return () -> Optional.ofNullable(AuthenticationUtil.getAuthenticatedUser())
-                .map(User::getUid);
+                .map(u -> String.valueOf(u.getId()));
     }
 }

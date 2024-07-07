@@ -22,7 +22,7 @@ public class UserPrincipal implements AuthenticatedPrincipal {
 
 	@Override
 	public String getName() {
-		return user.getUid();
+		return user.getPhone();
 	}
 
 }

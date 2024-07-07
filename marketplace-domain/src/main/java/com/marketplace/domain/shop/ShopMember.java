@@ -1,5 +1,6 @@
 package com.marketplace.domain.shop;
 
+import com.marketplace.domain.Audit;
 import com.marketplace.domain.user.User;
 
 import lombok.Getter;
@@ -16,6 +17,8 @@ public class ShopMember {
     private Role role;
 
     private User member;
+    
+    private Audit audit;
 
     public ShopMember() {
         this.role = Role.ADMIN;

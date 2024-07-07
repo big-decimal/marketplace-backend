@@ -20,6 +20,8 @@ public interface ShopRepo extends JpaRepository<ShopEntity, Long>, JpaSpecificat
 	List<ShopEntity> findTop8ByNameIgnoreCaseLikeOrHeadlineIgnoreCaseLike(String name, String headline);
 	
 	List<ShopEntity> findTop10ByStatusOrderByCreatedAtDesc(Shop.Status status);
+	
+	List<ShopEntity> findByStatusAndFeaturedTrueAndExpiredAtGreaterThanOrderByCreatedAtDesc(Shop.Status status, long expiredAt);
 
 	<T> Optional<T> getShopById(long id, Class<T> type);
 	
