@@ -12,8 +12,6 @@ import com.marketplace.domain.user.User;
 
 public interface UserRepo extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
 
-	Optional<UserEntity> findByUid(String uid);
-	
     Optional<UserEntity> findByPhone(String phone);
     
     Optional<UserEntity> findByEmail(String mail);
@@ -21,8 +19,6 @@ public interface UserRepo extends JpaRepository<UserEntity, Long>, JpaSpecificat
     <T> Optional<T> getUserById(long id, Class<T> type);
 
     boolean existsByIdAndDisabledFalse(long id);
-    
-    boolean existsByUid(String uid);
 
     boolean existsByPhone(String phone);
     
@@ -33,10 +29,6 @@ public interface UserRepo extends JpaRepository<UserEntity, Long>, JpaSpecificat
     @Modifying
     @Query("UPDATE User u SET u.image = :image WHERE u.id = :userId")
     void updateImage(@Param("userId") long userId, @Param("image") String image);
-
-    @Modifying
-    @Query("UPDATE User u SET u.uid = :uid WHERE u.id = :userId")
-    void updateUid(@Param("userId") long userId, @Param("uid") String uid);
     
     @Modifying
     @Query("UPDATE User u SET u.role = :role WHERE u.id = :userId")
@@ -45,5 +37,13 @@ public interface UserRepo extends JpaRepository<UserEntity, Long>, JpaSpecificat
     @Modifying
     @Query("UPDATE User u SET u.phone = :phone WHERE u.id = :userId")
     void updatePhoneNumber(@Param("userId") long userId, @Param("phone") String phone);
+    
+    @Modifying
+    @Query("UPDATE User u SET u.password = :password WHERE u.id = :userId")
+    void updatePassword(@Param("userId") long userId, @Param("password") String password);
+    
+    @Modifying
+    @Query("UPDATE User u SET u.phoneNumberVerified = :value WHERE u.id = :userId")
+    void updatePhoneVerify(@Param("userId") long userId, @Param("value") boolean value);
 
 }

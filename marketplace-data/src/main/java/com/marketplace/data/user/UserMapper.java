@@ -19,13 +19,14 @@ public interface UserMapper {
     public static User toDomain(UserEntity entity) {
         var u = new User();
         u.setId(entity.getId());
-        u.setUid(entity.getUid());
         u.setName(entity.getName());
         u.setPhone(entity.getPhone());
         u.setEmail(entity.getEmail());
+        u.setPassword(entity.getPassword());
         u.setDisabled(entity.isDisabled());
         u.setImage(entity.getImage());
         u.setRole(entity.getRole());
+        u.setPhoneNumberVerified(entity.isPhoneNumberVerified());
         u.setAudit(AuditMapper.from(entity));
         return u;
     }

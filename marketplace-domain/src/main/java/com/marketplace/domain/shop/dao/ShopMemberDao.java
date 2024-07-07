@@ -2,6 +2,7 @@ package com.marketplace.domain.shop.dao;
 
 import java.util.List;
 
+import com.marketplace.domain.common.SortQuery;
 import com.marketplace.domain.shop.ShopMember;
 import com.marketplace.domain.shop.ShopMemberInput;
 
@@ -17,5 +18,5 @@ public interface ShopMemberDao {
     
     ShopMember findByShopAndUser(long shopId, long userId);
     
-    List<ShopMember> findByShop(long shopId);
+    List<ShopMember> findByShop(long shopId, SortQuery sortQuery);
 }

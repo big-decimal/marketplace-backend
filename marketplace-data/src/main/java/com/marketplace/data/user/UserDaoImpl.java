@@ -21,158 +21,154 @@ import com.marketplace.domain.user.dao.UserDao;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private UserRepo userRepo;
-    
-    @Autowired
-    private UserPermissionRepo userPermissionRepo;
+	@Autowired
+	private UserRepo userRepo;
 
-    @Override
-    public User create(User user) {
-        var entity = new UserEntity();
-        entity.setName(user.getName());
-        entity.setEmail(user.getEmail());
-        entity.setRole(user.getRole());
-        entity.setUid(user.getUid());
-        entity.setImage(user.getImage());
-        var result = userRepo.save(entity);
+	@Autowired
+	private UserPermissionRepo userPermissionRepo;
 
-        return UserMapper.toDomain(result);
-    }
-    
-    @Override
-    public void updateUid(long userId, String uid) {
-    	userRepo.updateUid(userId, uid);
-    }
+	@Override
+	public User create(User user) {
+		var entity = new UserEntity();
+		entity.setName(user.getName());
+		entity.setPhone(user.getPhone());
+		entity.setPassword(user.getPassword());
+		entity.setRole(user.getRole());
+		var result = userRepo.save(entity);
 
-    @Override
-    public User update(ProfileUpdateInput values) {
-        var entity = userRepo.findById(values.getUserId()).orElseThrow();
-        entity.setName(values.getName());
-        entity.setPhone(values.getPhone());
-        
-        var result = userRepo.save(entity);
+		return UserMapper.toDomain(result);
+	}
 
-        return UserMapper.toDomain(result);
-    }
-    
-    @Override
-    public void updatePermissions(long userId, List<User.Permission> permissions) {
-    	var user = userRepo.getReferenceById(userId);
-    	var entities = permissions.stream().map(p -> {
-    		var e = new UserPermissionEntity();
-    		e.getId().setPermission(p);
-    		e.setUser(user);
-    		return e;
-    	}).toList();
-    	
-    	userPermissionRepo.saveAll(entities);
-    }
+	@Override
+	public User update(ProfileUpdateInput values) {
+		var entity = userRepo.findById(values.getUserId()).orElseThrow();
+		entity.setName(values.getName());
 
-    @Override
-    public void updateImage(long userId, String fileName) {
-        userRepo.updateImage(userId, fileName);
-    }
+		var result = userRepo.save(entity);
 
-    @Override
-    public void updateRole(long userId, User.Role role) {
-        userRepo.updateRole(userId, role);
-    }
+		return UserMapper.toDomain(result);
+	}
 
-    @Override
-    public void delete(long id) {
-        userRepo.deleteById(id);
-    }
-    
-    @Override
-    public void deletePermissionsByUser(long userId) {
-    	userPermissionRepo.deleteByUserId(userId);
-    }
+	@Override
+	public void updatePermissions(long userId, List<User.Permission> permissions) {
+		var user = userRepo.getReferenceById(userId);
+		var entities = permissions.stream().map(p -> {
+			var e = new UserPermissionEntity();
+			e.getId().setPermission(p);
+			e.setUser(user);
+			return e;
+		}).toList();
 
-    @Override
-    public boolean existsById(long id) {
-        return userRepo.existsById(id);
-    }
-    
-    @Override
-    public boolean existsByUid(String uid) {
-    	return userRepo.existsByUid(uid);
-    }
+		userPermissionRepo.saveAll(entities);
+	}
 
-    @Override
-    public boolean existsByPhone(String phoneNumber) {
-        return userRepo.existsByPhone(phoneNumber);
-    }
-    
-    @Override
+	@Override
+	public void updateImage(long userId, String fileName) {
+		userRepo.updateImage(userId, fileName);
+	}
+
+	@Override
+	public void updateRole(long userId, User.Role role) {
+		userRepo.updateRole(userId, role);
+	}
+	
+	@Override
+	public void updatePassword(long userId, String password) {
+		userRepo.updatePassword(userId, password);
+	}
+	
+	@Override
+	public void updatePhoneNumber(long userId, String phone) {
+		userRepo.updatePhoneNumber(userId, phone);
+	}
+	
+	@Override
+	public void verifyPhoneNumber(long userId) {
+		userRepo.updatePhoneVerify(userId, true);
+	}
+
+	@Override
+	public void delete(long id) {
+		userRepo.deleteById(id);
+	}
+
+	@Override
+	public void deletePermissionsByUser(long userId) {
+		userPermissionRepo.deleteByUserId(userId);
+	}
+
+	@Override
+	public boolean existsById(long id) {
+		return userRepo.existsById(id);
+	}
+
+	@Override
+	public boolean existsByPhone(String phoneNumber) {
+		return userRepo.existsByPhone(phoneNumber);
+	}
+
+	@Override
 	public boolean existsByEmail(String email) {
 		return userRepo.existsByEmail(email);
 	}
-    
-    @Override
-    public boolean existsByIdNotAndEmail(long userId, String email) {
-    	return userRepo.existsByIdNotAndEmail(userId, email);
-    }
-    
-    @Override
-    public long count() {
-    	return userRepo.count();
-    }
 
-    @Override
-    public String getImage(long id) {
-        return userRepo.getUserById(id, UserImageView.class).map(UserImageView::getImage).orElse(null);
-    }
-    
-    @Override
-    public Role getRole(long id) {
-    	return userRepo.getUserById(id, UserRoleView.class).map(UserRoleView::getRole).orElse(null);
-    }
+	@Override
+	public boolean existsByIdNotAndEmail(long userId, String email) {
+		return userRepo.existsByIdNotAndEmail(userId, email);
+	}
 
-    @Override
-    public User findById(long id) {
-        return userRepo.findById(id).map(UserMapper::toDomain).orElse(null);
-    }
-    
-    @Override
-    public User findByUid(String uid) {
-    	return userRepo.findByUid(uid).map(UserMapper::toDomain).orElse(null);
-    }
+	@Override
+	public long count() {
+		return userRepo.count();
+	}
 
-    @Override
-    public User findByPhone(String phone) {
-        return userRepo.findByPhone(phone).map(UserMapper::toDomain).orElse(null);
-    }
-    
-    @Override
-    public User findByEmail(String email) {
-    	return userRepo.findByEmail(email).map(UserMapper::toDomain).orElse(null);
-    }
-    
-    @Override
-    public UserPermission getUserPermission(long userId, String permission) {
-    	var id = new UserPermissionEntity.ID(userId, User.Permission.valueOf(permission));
-    	return userPermissionRepo.findById(id).map(e -> {
-    		return new UserPermission(e.getPermission());
-    	}).orElse(null);
-    }
-    
-    @Override
-    public List<User.Permission> getPermissionsByUser(long userId) {
-    	return userPermissionRepo.findById_UserId(userId).stream()
-    			.map(UserPermissionEntity::getPermission)
-    			.toList();
-    }
+	@Override
+	public String getImage(long id) {
+		return userRepo.getUserById(id, UserImageView.class).map(UserImageView::getImage).orElse(null);
+	}
 
-    @Override
-    public PageData<User> findAll(SearchQuery searchQuery) {
-        var spec = JpaSpecificationBuilder.build(searchQuery.getCriterias(), UserEntity.class);
+	@Override
+	public Role getRole(long id) {
+		return userRepo.getUserById(id, UserRoleView.class).map(UserRoleView::getRole).orElse(null);
+	}
 
-        var pageable = PageQueryMapper.fromPageQuery(searchQuery.getPageQuery());
+	@Override
+	public User findById(long id) {
+		return userRepo.findById(id).map(UserMapper::toDomain).orElse(null);
+	}
 
-        var pageResult = spec != null ? userRepo.findAll(spec, pageable) : userRepo.findAll(pageable);
-        
-        return PageDataMapper.map(pageResult, e -> UserMapper.toDomain(e));
-    }
+	@Override
+	public User findByPhone(String phone) {
+		return userRepo.findByPhone(phone).map(UserMapper::toDomain).orElse(null);
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		return userRepo.findByEmail(email).map(UserMapper::toDomain).orElse(null);
+	}
+
+	@Override
+	public UserPermission getUserPermission(long userId, String permission) {
+		var id = new UserPermissionEntity.ID(userId, User.Permission.valueOf(permission));
+		return userPermissionRepo.findById(id).map(e -> {
+			return new UserPermission(e.getPermission());
+		}).orElse(null);
+	}
+
+	@Override
+	public List<User.Permission> getPermissionsByUser(long userId) {
+		return userPermissionRepo.findById_UserId(userId).stream().map(UserPermissionEntity::getPermission).toList();
+	}
+
+	@Override
+	public PageData<User> findAll(SearchQuery searchQuery) {
+		var spec = JpaSpecificationBuilder.build(searchQuery.getCriterias(), UserEntity.class);
+
+		var pageable = PageQueryMapper.fromPageQuery(searchQuery.getPageQuery());
+
+		var pageResult = spec != null ? userRepo.findAll(spec, pageable) : userRepo.findAll(pageable);
+
+		return PageDataMapper.map(pageResult, e -> UserMapper.toDomain(e));
+	}
 
 }

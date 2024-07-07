@@ -11,6 +11,4 @@ public class ProfileUpdateInput {
 	
 	private String name;
 	
-	private String phone;
-	
 }

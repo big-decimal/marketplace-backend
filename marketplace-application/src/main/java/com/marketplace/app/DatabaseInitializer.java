@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,9 @@ public class DatabaseInitializer {
 	@Autowired
 	private ApplicationContext context;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@EventListener(ApplicationReadyEvent.class)
 	public void onReady() {
 		var result = initialize();
@@ -51,28 +55,28 @@ public class DatabaseInitializer {
 		try {
 			var su = props.getSuperUser();
 			var errors = new ArrayList<String>();
-			if (!Utils.hasText(su.getUid())) {
-				errors.add("Required super-user's uid");
+			if (!Utils.isPhoneNumber(su.getPhone())) {
+				errors.add("Required super-user's phone");
 			}
 			
 			if (!Utils.hasText(su.getName())) {
 				errors.add("Required super-user's name");
 			}
 			
-			if (!Utils.hasText(su.getEmail())) {
-				errors.add("Required super-user's email");
+			if (!Utils.hasText(su.getPassword())) {
+				errors.add("Required super-user's password");
 			}
 			
 			if (errors.size() > 0) {
 				throw new RuntimeException(errors.stream().collect(Collectors.joining("\n\s\s", "\s\s", "\n")));
 			}
 			
-			if (!userDao.existsByUid(su.getUid())) {
+			if (!userDao.existsByPhone(su.getPhone())) {
 				var user = new User();
 				user.setName(su.getName());
-				user.setEmail(su.getEmail());
+				user.setPhone(su.getPhone());
+				user.setPassword(passwordEncoder.encode(su.getPassword()));
 				user.setRole(User.Role.OWNER);
-				user.setUid(su.getUid());
 				
 				userDao.create(user);
 			}

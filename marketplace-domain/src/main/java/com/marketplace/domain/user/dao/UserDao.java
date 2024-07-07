@@ -14,13 +14,17 @@ public interface UserDao {
 
     User update(ProfileUpdateInput values);
     
-    void updateUid(long userId, String uid);
-    
     void updatePermissions(long userId, List<User.Permission> permissions);
 
     void updateImage(long userId, String fileName);
 
     void updateRole(long userId, User.Role role);
+    
+    void updatePassword(long userId, String password);
+    
+    void updatePhoneNumber(long userId, String phone);
+    
+    void verifyPhoneNumber(long userId);
     
     void delete(long id);
     
@@ -28,8 +32,6 @@ public interface UserDao {
 
     boolean existsById(long id);
     
-    boolean existsByUid(String uid);
-
     boolean existsByPhone(String phone);
     
     boolean existsByEmail(String email);
@@ -44,8 +46,6 @@ public interface UserDao {
 
     User findById(long id);
     
-    User findByUid(String uid);
-
     User findByPhone(String phone);
     
     User findByEmail(String email);

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.marketplace.api.AuditDTO;
 import com.marketplace.api.AbstractImageFieldSerializer.ProductImageSerializer;
 import com.marketplace.api.consumer.category.CategoryDTO;
 import com.marketplace.api.consumer.shop.ShopDTO;
@@ -56,4 +57,6 @@ public class ProductDTO {
     private CategoryDTO category;
 
     private ShopDTO shop;
+    
+    private AuditDTO audit;
 }

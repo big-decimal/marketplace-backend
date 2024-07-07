@@ -15,6 +15,7 @@ import com.marketplace.data.category.CategoryRepo;
 import com.marketplace.data.discount.DiscountRepo;
 import com.marketplace.data.product.view.ProductBrandView;
 import com.marketplace.data.shop.ShopRepo;
+import com.marketplace.domain.ApplicationException;
 import com.marketplace.domain.PageData;
 import com.marketplace.domain.common.PageQuery;
 import com.marketplace.domain.common.SearchQuery;
@@ -104,7 +105,11 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void updateStatus(long id, Product.Status status) {
-        productRepo.updateStatus(id, status);
+    	var entity = productRepo.findById(id)
+    			.orElseThrow(() -> ApplicationException.notFound("Product not found"));
+    	entity.setStatus(status);
+    	productRepo.save(entity);
+//        productRepo.updateStatus(id, status);
     }
     
     @Override
@@ -119,12 +124,20 @@ public class ProductDaoImpl implements ProductDao {
     
     @Override
     public void updatePrice(long productId, BigDecimal price) {
-    	productRepo.updatePrice(productId, price);
+    	var entity = productRepo.findById(productId)
+    			.orElseThrow(() -> ApplicationException.notFound("Product not found"));
+    	entity.setPrice(price);
+    	productRepo.save(entity);
+//    	productRepo.updatePrice(productId, price);
     }
     
     @Override
     public void updateDescription(long productId, String value) {
-    	productRepo.updateDescription(productId, value);
+    	var entity = productRepo.findById(productId)
+    			.orElseThrow(() -> ApplicationException.notFound("Product not found"));
+    	entity.setDescription(value);
+    	productRepo.save(entity);
+//    	productRepo.updateDescription(productId, value);
     }
 
     @Override

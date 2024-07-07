@@ -9,6 +9,7 @@ import com.marketplace.domain.category.CategoryDao;
 import com.marketplace.domain.common.SortQuery;
 import com.marketplace.domain.general.HomeData;
 import com.marketplace.domain.product.dao.ProductDao;
+import com.marketplace.domain.shop.dao.ShopDao;
 
 @Component
 public class GetHomePageDataUseCase {
@@ -22,12 +23,16 @@ public class GetHomePageDataUseCase {
 	@Autowired
 	private ProductDao productDao;
 	
+	@Autowired
+	private ShopDao shopDao;
+	
 	@Transactional(readOnly = true)
 	public HomeData apply() {
 		var data = new HomeData();
 		var sort = SortQuery.desc("createdAt");
 		data.setBanners(bannerDao.findAll(sort));
 		data.setMainCategories(categoryDao.findRootCategories());
+		data.setFeaturedShops(shopDao.getTopFeaturedShops());
 		data.setFeaturedProducts(productDao.getTopFeaturedProducts());
 		data.setDiscountProducts(productDao.getTopDiscountProducts());
 		return data;

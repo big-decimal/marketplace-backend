@@ -81,6 +81,8 @@ public interface VendorDataMapper extends CommonDataMapper {
 	
 	ShopMemberDTO map(ShopMember source);
 	
+	List<ShopMemberDTO> map(List<ShopMember> source);
+	
 	ShopMonthlySaleDTO map(ShopMonthlySale source);
 	
 	List<ShopMonthlySaleDTO> mapShopMonthlySaleList(List<ShopMonthlySale> source);

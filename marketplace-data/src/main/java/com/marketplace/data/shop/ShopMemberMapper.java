@@ -1,5 +1,6 @@
 package com.marketplace.data.shop;
 
+import com.marketplace.data.AuditMapper;
 import com.marketplace.data.user.UserMapper;
 import com.marketplace.domain.shop.ShopMember;
 
@@ -9,7 +10,8 @@ public interface ShopMemberMapper {
 		var member = new ShopMember();
 		member.setRole(entity.getRole());
 		member.setMember(UserMapper.toDomain(entity.getUser()));
+		member.setAudit(AuditMapper.from(entity));
 		return member;
 	}
-	
+
 }

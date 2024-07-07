@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.marketplace.domain.shop.ShopMember;
@@ -14,7 +15,7 @@ public interface ShopMemberRepo extends JpaRepository<ShopMemberEntity, ShopMemb
 
 	Page<ShopMemberEntity> findByUserIdAndShop_DeletedFalse(long userId, Pageable pageable);
 
-	List<ShopMemberEntity> findByShopId(long shopId);
+	List<ShopMemberEntity> findByShopId(long shopId, Sort sort);
 
 	void deleteByShopId(long shopId);
 	

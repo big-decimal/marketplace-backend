@@ -53,6 +53,8 @@ public interface ShopDao {
 	Shop findBySlug(String slug);
 
 	List<Shop> getShopHints(String q, int limit);
+	
+	List<Shop> getTopFeaturedShops();
 
 	PageData<Shop> findByUser(long userId, PageQuery pageQuery);
 

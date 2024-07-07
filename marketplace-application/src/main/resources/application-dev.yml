@@ -20,13 +20,6 @@ spring:
 
   jackson:
     default-property-inclusion: non-null
-    
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${app.firebase.jwk-set-uri}
-          issuer-uri: ${app.firebase.issuer-uri}
 
 
 springdoc:

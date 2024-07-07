@@ -104,4 +104,27 @@ public class ShopController {
 	public List<ShopLicenseDTO> getShopLicenses(@PathVariable long shopId) {
 		return shopFacade.getShopLicenses(shopId);
 	}
+
+	@GetMapping("members/{userId:\\d+}")
+	public ShopMemberDTO getShopMember(@PathVariable long shopId, @PathVariable long userId) {
+		return shopFacade.getShopMember(shopId, userId);
+	}
+	
+	@PreAuthorize("@authz.isShopOwner(#shopId)")
+	@PostMapping("members/{phone}")
+	public void createShopMember(@PathVariable long shopId, @PathVariable String phone) {
+		shopFacade.createShopMember(shopId, phone);
+	}
+	
+	@PreAuthorize("@authz.isShopOwner(#shopId)")
+	@DeleteMapping("members/{userId:\\d+}")
+	public void deleteShopMember(@PathVariable long shopId, @PathVariable long userId) {
+		shopFacade.deleteShopMember(shopId, userId);
+	}
+	
+	@PreAuthorize("@authz.isShopOwner(#shopId)")
+	@GetMapping("members")
+	public List<ShopMemberDTO> getShopMembers(@PathVariable long shopId) {
+		return shopFacade.getShopMembers(shopId);
+	}
 }
