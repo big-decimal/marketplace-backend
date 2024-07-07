@@ -88,6 +88,9 @@ public class NativeRuntimeHints implements RuntimeHintsRegistrar {
         var isShopMember = ReflectionUtils.findMethod(Authz.class, "isShopMember", Long.class);
         hints.reflection().registerMethod(isShopMember, ExecutableMode.INVOKE);
         
+        var isOwnerMember = ReflectionUtils.findMethod(Authz.class, "isShopOwner", Long.class);
+        hints.reflection().registerMethod(isOwnerMember, ExecutableMode.INVOKE);
+        
         var setAuditorAware = ReflectionUtils.findMethod(AuditingHandler.class, "setAuditorAware", AuditorAware.class);
         hints.reflection().registerMethod(setAuditorAware, ExecutableMode.INVOKE);
         
