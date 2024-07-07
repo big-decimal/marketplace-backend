@@ -7,11 +7,14 @@ import org.springframework.stereotype.Component;
 
 import com.marketplace.api.PageDataDTO;
 import com.marketplace.api.consumer.ConsumerDataMapper;
+import com.marketplace.api.vendor.VendorDataMapper;
 import com.marketplace.api.vendor.shop.ShopAcceptedPaymentDTO;
+import com.marketplace.api.vendor.shop.ShopLicenseDTO;
 import com.marketplace.domain.shop.ShopQuery;
 import com.marketplace.domain.shop.usecase.GetAllShopAcceptedPaymentUseCase;
 import com.marketplace.domain.shop.usecase.GetAllShopUseCase;
 import com.marketplace.domain.shop.usecase.GetShopBySlugUseCase;
+import com.marketplace.domain.shop.usecase.GetShopLicensesUseCase;
 import com.marketplace.domain.shop.usecase.GetShopSettingUseCase;
 
 @Component
@@ -30,7 +33,13 @@ public class ShopControllerFacade {
 	private GetAllShopAcceptedPaymentUseCase getAllShopAcceptedPaymentUseCase;
 	
 	@Autowired
+	private GetShopLicensesUseCase getShopLicensesUseCase;
+	
+	@Autowired
 	private ConsumerDataMapper mapper;
+	
+	@Autowired
+	private VendorDataMapper vendorDataMapper;
 
 	public ShopDTO findBySlug(String slug) {
 		var source = getShopBySlugUseCase.apply(slug);
@@ -51,5 +60,10 @@ public class ShopControllerFacade {
     	var source = getAllShopAcceptedPaymentUseCase.apply(shopId);
     	return mapper.mapShopAcceptedPaymentList(source);
     }
+	
+	public List<ShopLicenseDTO> getShopLicenses(long shopId) {
+		var source = getShopLicensesUseCase.apply(shopId);
+		return vendorDataMapper.mapShopLicenseList(source);
+	}
 
 }
