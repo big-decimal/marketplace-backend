@@ -8,10 +8,11 @@ import com.marketplace.data.market.MarketMapper;
 import com.marketplace.domain.Utils;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopContact;
+import com.marketplace.domain.shop.ShopLegal;
 
 public interface ShopMapper {
 
-	public static Shop toDomainCompat(ShopEntity entity) {
+	static Shop toDomainCompat(ShopEntity entity) {
 		var s = new Shop();
 		s.setId(entity.getId());
 		s.setName(entity.getName());
@@ -27,7 +28,7 @@ public interface ShopMapper {
 		return s;
 	}
 
-	public static Shop toDomain(ShopEntity entity) {
+	static Shop toDomain(ShopEntity entity) {
 		var s = toDomainCompat(entity);
 		s.setAbout(entity.getAbout());
 		if (entity.getContact() != null) {
@@ -41,10 +42,14 @@ public interface ShopMapper {
 		if (entity.getMarket() != null) {
 			s.setMarket(MarketMapper.toDomain(entity.getMarket()));
 		}
+		
+		if (entity.getLegal() != null) {
+			s.setLegal(toLegal(entity.getLegal()));
+		}
 		return s;
 	}
 
-	public static ShopContact toContact(ShopContactEntity entity) {
+	static ShopContact toContact(ShopContactEntity entity) {
 		var contact = new ShopContact();
 		if (entity == null) {
 			return contact;
@@ -57,6 +62,18 @@ public interface ShopMapper {
 			contact.setPhones(Arrays.asList(entity.getPhones().split(",")));
 		}
 		return contact;
+	}
+	
+	static ShopLegal toLegal(ShopLegalEntity entity) {
+		var legal = new ShopLegal();
+		if (entity == null) {
+			return legal;
+		}
+		
+		legal.setOwnerName(entity.getOwnerName());
+		legal.setSellerName(entity.getSellerName());
+		legal.setShopNumber(entity.getShopNumber());
+		return legal;
 	}
 
 }

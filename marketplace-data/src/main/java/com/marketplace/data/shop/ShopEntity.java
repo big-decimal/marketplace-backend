@@ -74,6 +74,9 @@ public class ShopEntity extends AuditingEntity {
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private ShopSettingEntity setting;
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private ShopLegalEntity legal;
 
 	@OneToOne(mappedBy = "shop", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private ShopRatingEntity rating;

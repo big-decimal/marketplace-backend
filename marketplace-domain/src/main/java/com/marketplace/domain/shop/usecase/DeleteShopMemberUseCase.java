@@ -23,7 +23,7 @@ public class DeleteShopMemberUseCase {
 		}
 
 		if (member.getRole() == ShopMember.Role.OWNER) {
-			throw new ApplicationException("Owner member not found");
+			throw new ApplicationException("Owner member cannot be deleted");
 		}
 
 		dao.delete(shopId, userId);

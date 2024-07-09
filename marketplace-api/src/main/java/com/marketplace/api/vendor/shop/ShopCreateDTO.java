@@ -43,5 +43,7 @@ public class ShopCreateDTO {
 	private MultipartFile cover;
 
 	private List<MultipartFile> licenses;
+	
+	private ShopLegalDTO legal;
 
 }

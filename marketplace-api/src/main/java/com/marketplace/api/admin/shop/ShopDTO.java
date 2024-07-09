@@ -6,6 +6,7 @@ import com.marketplace.api.AuditDTO;
 import com.marketplace.api.consumer.general.CityDTO;
 import com.marketplace.api.consumer.market.MarketDTO;
 import com.marketplace.api.consumer.shop.ShopContactDTO;
+import com.marketplace.api.vendor.shop.ShopLegalDTO;
 import com.marketplace.domain.shop.Shop;
 
 import lombok.Getter;
@@ -39,6 +40,8 @@ public class ShopDTO {
     private long expiredAt;
     
     private ShopContactDTO contact;
+    
+    private ShopLegalDTO legal;
     
     private CityDTO city;
     

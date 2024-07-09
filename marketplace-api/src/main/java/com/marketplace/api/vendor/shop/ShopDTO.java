@@ -41,6 +41,8 @@ public class ShopDTO {
     
     private ShopContactDTO contact;
     
+    private ShopLegalDTO legal;
+    
     private CityDTO city;
     
     private MarketDTO market;
