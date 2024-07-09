@@ -44,6 +44,8 @@ public class Shop {
 
     private ShopContact contact;
     
+    private ShopLegal legal;
+    
     private City city;
     
     private Market market;

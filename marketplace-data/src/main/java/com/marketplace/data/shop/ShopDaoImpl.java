@@ -24,6 +24,7 @@ import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.Shop.Status;
 import com.marketplace.domain.shop.ShopContactInput;
 import com.marketplace.domain.shop.ShopCreateInput;
+import com.marketplace.domain.shop.ShopLegalInput;
 import com.marketplace.domain.shop.ShopUpdateInput;
 import com.marketplace.domain.shop.dao.ShopDao;
 
@@ -44,6 +45,9 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Autowired
 	private MarketRepo marketRepo;
+	
+	@Autowired
+	private ShopLegalRepo shopLegalRepo;
 
 	@Override
 	public long create(ShopCreateInput values) {
@@ -100,6 +104,17 @@ public class ShopDaoImpl implements ShopDao {
 		shopContactRepo.save(entity);
 
 		shopRepo.updateCity(values.getShopId(), cityRepo.getReferenceById(values.getCityId()));
+	}
+	
+	@Override
+	public void saveLegal(ShopLegalInput values) {
+		var entity = shopLegalRepo.findById(values.getShopId()).orElseGet(ShopLegalEntity::new);
+		entity.setShop(shopRepo.getReferenceById(values.getShopId()));
+		entity.setOwnerName(values.getOwnerName());
+		entity.setSellerName(values.getSellerName());
+		entity.setShopNumber(values.getShopNumber());
+		
+		shopLegalRepo.save(entity);
 	}
 
 	@Override

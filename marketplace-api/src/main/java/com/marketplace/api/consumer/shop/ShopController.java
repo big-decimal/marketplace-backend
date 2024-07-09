@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marketplace.api.PageDataDTO;
 import com.marketplace.api.vendor.shop.ShopAcceptedPaymentDTO;
+import com.marketplace.api.vendor.shop.ShopLicenseDTO;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopQuery;
 
@@ -38,6 +39,11 @@ public class ShopController {
     public List<ShopAcceptedPaymentDTO> findAcceptedPayments(@PathVariable long shopId) {
         return shopFacade.findAcceptedPaymentsByShop(shopId);
     }
+	
+	@GetMapping("{shopId:\\d+}/licenses")
+	public List<ShopLicenseDTO> getShopLicenses(@PathVariable long shopId) {
+		return shopFacade.getShopLicenses(shopId);
+	}
 
 	@GetMapping
 	public PageDataDTO<ShopDTO> findAll(

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.marketplace.api.MultipartFileConverter;
 import com.marketplace.api.vendor.VendorDataMapper;
 import com.marketplace.domain.order.usecase.GetPendingOrderCountByShopUseCase;
+import com.marketplace.domain.shop.ShopLegalInput;
 import com.marketplace.domain.shop.dao.ShopMemberDao;
 import com.marketplace.domain.shop.usecase.CreateShopMemberUseCase;
 import com.marketplace.domain.shop.usecase.CreateShopUseCase;
@@ -25,6 +26,7 @@ import com.marketplace.domain.shop.usecase.GetShopStatisticUseCase;
 import com.marketplace.domain.shop.usecase.SaveShopAcceptedPaymentUseCase;
 import com.marketplace.domain.shop.usecase.SaveShopSettingUseCase;
 import com.marketplace.domain.shop.usecase.UpdateShopContactUseCase;
+import com.marketplace.domain.shop.usecase.UpdateShopLegalUseCase;
 import com.marketplace.domain.shop.usecase.UpdateShopUseCase;
 import com.marketplace.domain.shop.usecase.UploadShopCoverUseCase;
 import com.marketplace.domain.shop.usecase.UploadShopLicenseUseCase;
@@ -40,7 +42,10 @@ public class ShopControllerFacade {
 	private UpdateShopUseCase updateShopUseCase;
 
 	@Autowired
-	private UpdateShopContactUseCase saveShopContactUseCase;
+	private UpdateShopContactUseCase updateShopContactUseCase;
+	
+	@Autowired
+	private UpdateShopLegalUseCase updateShopLegalUseCase;
 
 	@Autowired
 	private UploadShopLogoUseCase uploadShopLogoUseCase;
@@ -106,7 +111,11 @@ public class ShopControllerFacade {
 	}
 
 	public void updateContact(ShopContactUpdateDTO values) {
-		saveShopContactUseCase.apply(mapper.map(values));
+		updateShopContactUseCase.apply(mapper.map(values));
+	}
+	
+	public void updateLegal(ShopLegalInput values) {
+		updateShopLegalUseCase.apply(values);
 	}
 
 	public void updateSetting(ShopSettingDTO values) {

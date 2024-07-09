@@ -14,6 +14,7 @@ import com.marketplace.domain.market.MarketDao;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopContactInput;
 import com.marketplace.domain.shop.ShopCreateInput;
+import com.marketplace.domain.shop.ShopLegalInput;
 import com.marketplace.domain.shop.ShopMember.Role;
 import com.marketplace.domain.shop.ShopMemberInput;
 import com.marketplace.domain.shop.ShopRating;
@@ -68,6 +69,9 @@ public class CreateShopUseCase {
 
 	@Autowired
 	private UploadShopLicenseUseCase uploadShopLicenseUseCase;
+	
+	@Autowired
+	private UpdateShopLegalUseCase updateShopLegalUseCase;
 
 	@Transactional
 	public void apply(ShopCreateInput values) {
@@ -138,6 +142,15 @@ public class CreateShopUseCase {
 
 		if (acceptedPayments != null && !acceptedPayments.isEmpty()) {
 			saveShopAcceptedPaymentUseCase.apply(shopId, acceptedPayments);
+		}
+		
+		if (values.getLegal() != null) {
+			var legal = new ShopLegalInput();
+			legal.setShopId(shopId);
+			legal.setOwnerName(values.getLegal().getOwnerName());
+			legal.setSellerName(values.getLegal().getSellerName());
+			legal.setShopNumber(values.getLegal().getShopNumber());
+			updateShopLegalUseCase.apply(legal);
 		}
 
 		if (values.getLogo() != null && !values.getLogo().isEmpty()) {

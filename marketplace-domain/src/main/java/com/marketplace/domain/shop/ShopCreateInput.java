@@ -40,6 +40,8 @@ public class ShopCreateInput {
 	private UploadFile cover;
 	
 	private List<UploadFile> licenses;
+	
+	private ShopLegal legal;
 
 	public ShopCreateInput() {
 	}

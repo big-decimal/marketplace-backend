@@ -8,6 +8,7 @@ import com.marketplace.domain.common.SearchQuery;
 import com.marketplace.domain.shop.Shop;
 import com.marketplace.domain.shop.ShopContactInput;
 import com.marketplace.domain.shop.ShopCreateInput;
+import com.marketplace.domain.shop.ShopLegalInput;
 import com.marketplace.domain.shop.ShopUpdateInput;
 
 public interface ShopDao {
@@ -17,6 +18,8 @@ public interface ShopDao {
 	Shop update(ShopUpdateInput general);
 
 	void saveContact(ShopContactInput values);
+	
+	void saveLegal(ShopLegalInput values);
 
 	void updateLogo(long shopId, String logo);
 
