@@ -24,6 +24,7 @@ public class SubscriptionPlanDaoImpl implements SubscriptionPlanDao {
         entity.setPrice(values.getPrice());
         entity.setDuration(values.getDuration());
         entity.setPromoUsable(values.isPromoUsable());
+        entity.setTrial(values.isTrial());
 
         var result = subscriptionPlanRepo.save(entity);
         

@@ -83,6 +83,11 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	@Override
+	public void updateDisabled(long userId, boolean disabled) {
+		userRepo.updateDisabled(userId, disabled);
+	}
+	
+	@Override
 	public void verifyPhoneNumber(long userId) {
 		userRepo.updatePhoneVerify(userId, true);
 	}

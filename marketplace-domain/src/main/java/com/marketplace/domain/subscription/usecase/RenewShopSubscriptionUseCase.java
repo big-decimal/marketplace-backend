@@ -70,6 +70,10 @@ public class RenewShopSubscriptionUseCase {
 			throw new ApplicationException("Subscription plan not found");
 		}
 		
+		if (shop.getExpiredAt() > 0 && subscriptionPlan.isTrial()) {
+			throw new ApplicationException("Failed to subscribe plan");
+		}
+		
 		var shopSubscriptionDraft = new ShopSubscriptionDraft();
 		shopSubscriptionDraft.setTitle(subscriptionPlan.getTitle());
 		shopSubscriptionDraft.setSubTotalPrice(subscriptionPlan.getPrice());

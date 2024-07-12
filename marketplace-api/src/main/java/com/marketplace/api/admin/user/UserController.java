@@ -60,6 +60,24 @@ public class UserController {
 		}
 		userFacade.verifyPhoneNumber(userId);
 	}
+	
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
+	@PutMapping("{userId:\\d+}/enable")
+	public void enableUser(@PathVariable long userId) {
+		if (userId == AuthenticationUtil.getAuthenticatedUserId()) {
+			throw new ApplicationException("Failed to enable user");
+		}
+		userFacade.updateDisabled(userId, false);
+	}
+	
+	@PreAuthorize("hasPermission('USER', 'WRITE')")
+	@PutMapping("{userId:\\d+}/disable")
+	public void disableUser(@PathVariable long userId) {
+		if (userId == AuthenticationUtil.getAuthenticatedUserId()) {
+			throw new ApplicationException("Failed to disable user");
+		}
+		userFacade.updateDisabled(userId, true);
+	}
 
 	@PreAuthorize("hasPermission('USER', 'READ')")
 	@GetMapping("{userId:\\d+}")

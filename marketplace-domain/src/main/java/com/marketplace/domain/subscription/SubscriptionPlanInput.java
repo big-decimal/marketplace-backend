@@ -16,6 +16,8 @@ public class SubscriptionPlanInput {
     private int duration; // by days
 
     private boolean promoUsable;
+    
+    private boolean trial;
 
     private BigDecimal price;
     

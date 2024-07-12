@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.marketplace.api.JwtUtil;
 import com.marketplace.api.UserPrincipal;
+import com.marketplace.domain.ApplicationException;
 import com.marketplace.domain.user.User;
 import com.marketplace.domain.user.dao.UserDao;
 
@@ -43,6 +44,10 @@ public class AccessTokenAuthenticationFilter extends OncePerRequestFilter {
 
 				if (user == null) {
 					throw new UsernameNotFoundException("User not found");
+				}
+				
+				if (user.isDisabled()) {
+					throw new ApplicationException("Account disabled");
 				}
 
 				var principal = new UserPrincipal(user);

@@ -45,5 +45,9 @@ public interface UserRepo extends JpaRepository<UserEntity, Long>, JpaSpecificat
     @Modifying
     @Query("UPDATE User u SET u.phoneNumberVerified = :value WHERE u.id = :userId")
     void updatePhoneVerify(@Param("userId") long userId, @Param("value") boolean value);
+    
+    @Modifying
+    @Query("UPDATE User u SET u.disabled = :value WHERE u.id = :userId")
+    void updateDisabled(@Param("userId") long userId, @Param("value") boolean value);
 
 }

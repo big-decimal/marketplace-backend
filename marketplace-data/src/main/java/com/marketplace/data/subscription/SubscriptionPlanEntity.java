@@ -30,6 +30,8 @@ public class SubscriptionPlanEntity extends AuditingEntity {
 	private int duration; // by days
 
 	private boolean promoUsable;
+	
+	private boolean trial;
 
 	@Column(precision = 10, scale = 2, nullable = false)
 	private BigDecimal price;

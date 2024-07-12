@@ -24,6 +24,8 @@ public interface UserDao {
     
     void updatePhoneNumber(long userId, String phone);
     
+    void updateDisabled(long userId, boolean disabled);
+    
     void verifyPhoneNumber(long userId);
     
     void delete(long id);

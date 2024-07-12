@@ -37,6 +37,10 @@ public class SignInUseCase {
 			throw new ApplicationException("Phone number or password incorrect");
 		}
 		
+		if (user.isDisabled()) {
+			throw new ApplicationException("Account disabled");
+		}
+		
 		var result = new AuthResult();
 		result.setUser(user);
 		result.setAccessToken(authAdapter.generateAccessToken(user.getPhone()));

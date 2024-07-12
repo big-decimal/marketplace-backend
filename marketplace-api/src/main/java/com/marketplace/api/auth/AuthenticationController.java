@@ -94,6 +94,10 @@ public class AuthenticationController {
 			if (user == null) {
 				throw new RuntimeException("User not found");
 			}
+			
+			if (user.isDisabled()) {
+				throw new RuntimeException("Account disabled");
+			}
 
 			var result = new AuthResult();
 			result.setUser(user);

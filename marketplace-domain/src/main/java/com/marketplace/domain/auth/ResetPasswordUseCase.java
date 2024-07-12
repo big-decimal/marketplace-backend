@@ -28,6 +28,10 @@ public class ResetPasswordUseCase {
 			throw new ApplicationException("User not found");
 		}
 		
+		if (user.isDisabled()) {
+			throw new ApplicationException("Account disabled");
+		}
+		
 		if (!Utils.hasText(values.getPassword())) {
 			throw new ApplicationException("Password must not empty");
 		}

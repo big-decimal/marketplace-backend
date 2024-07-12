@@ -13,6 +13,7 @@ import com.marketplace.domain.user.UserQuery;
 import com.marketplace.domain.user.dao.UserDao;
 import com.marketplace.domain.user.usecase.GetAllUserUseCase;
 import com.marketplace.domain.user.usecase.GetUserByIdUseCase;
+import com.marketplace.domain.user.usecase.UpdateDisabledUseCase;
 import com.marketplace.domain.user.usecase.UpdatePasswordUseCase;
 import com.marketplace.domain.user.usecase.UpdatePhoneNumberUseCase;
 import com.marketplace.domain.user.usecase.UpdateUserPermissionsUseCase;
@@ -41,6 +42,9 @@ public class UserControllerFacade {
 
 	@Autowired
 	private UpdatePasswordUseCase updatePasswordUseCase;
+	
+	@Autowired
+	private UpdateDisabledUseCase updateDisabledUseCase;
 
 	@Autowired
 	private AdminDataMapper mapper;
@@ -59,6 +63,10 @@ public class UserControllerFacade {
 
 	public void updatePermissions(long userId, List<User.Permission> values) {
 		updateUserPermissionsUseCase.apply(userId, values);
+	}
+	
+	public void updateDisabled(long userId, boolean disabled) {
+		updateDisabledUseCase.apply(userId, disabled);
 	}
 
 	@Transactional

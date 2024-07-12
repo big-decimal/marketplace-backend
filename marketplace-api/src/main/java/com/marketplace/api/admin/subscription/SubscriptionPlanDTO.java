@@ -18,6 +18,8 @@ public class SubscriptionPlanDTO {
     private int duration;
 
     private boolean promoUsable;
+    
+    private boolean trial;
 
     private BigDecimal price;
     

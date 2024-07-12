@@ -11,6 +11,7 @@ public interface SubscriptionPlanMapper {
         sp.setTitle(entity.getTitle());
         sp.setDuration(entity.getDuration());
         sp.setPromoUsable(entity.isPromoUsable());
+        sp.setTrial(entity.isTrial());
         sp.setPrice(entity.getPrice());
         sp.setAudit(AuditMapper.from(entity));
         return sp;

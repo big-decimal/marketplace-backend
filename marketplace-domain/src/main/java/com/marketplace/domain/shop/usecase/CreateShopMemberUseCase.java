@@ -56,6 +56,10 @@ public class CreateShopMemberUseCase {
         	throw new ApplicationException("User is not verified");
         }
         
+        if (user.isDisabled()) {
+        	throw new ApplicationException("Account disabled");
+        }
+        
         if (dao.existsByShopAndUser(shopId, user.getId())) {
         	throw new ApplicationException("Shop member already exists");
         }
