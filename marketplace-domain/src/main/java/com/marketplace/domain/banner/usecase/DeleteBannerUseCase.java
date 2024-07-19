@@ -20,7 +20,7 @@ public class DeleteBannerUseCase {
     private FileStorageAdapter fileStorageAdapter;
 
 	@Transactional
-    public void apply(int id) {
+    public void apply(long id) {
         if (!dao.existsById(id)) {
             throw new ApplicationException("Banner not found");
         }

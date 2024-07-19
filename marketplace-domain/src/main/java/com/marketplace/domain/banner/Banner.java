@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Banner {
 
-	private int id;
+	private long id;
 
 	private String image;
 

@@ -1,5 +1,7 @@
 package com.marketplace.domain.shop.usecase;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,16 @@ public class GetAllShopUseCase {
 
 			var c = SearchCriteria.simple("expiredAt", operator, System.currentTimeMillis());
 			sq.addCriteria(c);
+		} else if (query.getExpireBefore() != null && query.getExpireBefore() > 0) {
+			var now = System.currentTimeMillis();
+			var diff = TimeUnit.DAYS.toMillis(query.getExpireBefore());
+			long daysFromNow = now + diff;
+			
+			var cNotExpired = SearchCriteria.simple("expiredAt", Operator.GREATER_THAN_EQ, now);
+			var cFromNow = SearchCriteria.simple("expiredAt", Operator.LESS_THAN_EQ, daysFromNow);
+			
+			sq.addCriteria(cNotExpired);
+			sq.addCriteria(cFromNow);
 		}
 
 		if (query.getStatus() != null) {

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BannerDTO {
-    private int id;
+    private long id;
 
     @JsonSerialize(using = BannerImageSerializer.class)
     private String image;

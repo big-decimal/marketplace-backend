@@ -13,7 +13,7 @@ public class GetBannerByIdUseCase {
 	@Autowired
 	private BannerDao dao;
 
-	public Banner apply(int id) {
+	public Banner apply(long id) {
 		var banner = dao.findById(id);
 		if (banner == null) {
 			throw ApplicationException.notFound("Banner not found");

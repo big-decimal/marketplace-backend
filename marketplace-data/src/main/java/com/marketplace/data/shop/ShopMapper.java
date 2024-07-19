@@ -48,6 +48,22 @@ public interface ShopMapper {
 		}
 		return s;
 	}
+	
+	static Shop toLegalDomain(ShopEntity entity) {
+		var s = toDomainCompat(entity);
+		if (entity.getContact() != null) {
+			s.setContact(toContact(entity.getContact()));
+		}
+
+		if (entity.getMarket() != null) {
+			s.setMarket(MarketMapper.toDomain(entity.getMarket()));
+		}
+		
+		if (entity.getLegal() != null) {
+			s.setLegal(toLegal(entity.getLegal()));
+		}
+		return s;
+	}
 
 	static ShopContact toContact(ShopContactEntity entity) {
 		var contact = new ShopContact();

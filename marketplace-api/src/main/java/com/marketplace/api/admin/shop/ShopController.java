@@ -72,6 +72,7 @@ public class ShopController {
             @RequestParam(required = false, name = "city-id") Long cityId,
             @RequestParam(required = false, name = "market-id") Long marketId,
             @RequestParam(required = false) Shop.Status status,
+            @RequestParam(required = false, name = "expire-before") Integer expireBefore,
             @RequestParam(required = false) Integer page) {
     	
         var query = ShopQuery.builder()
@@ -81,6 +82,7 @@ public class ShopController {
                 .cityId(cityId)
 				.marketId(marketId)
                 .featured(featured)
+                .expireBefore(expireBefore)
                 .page(page)
                 .build();
         return shopFacade.findAll(query);

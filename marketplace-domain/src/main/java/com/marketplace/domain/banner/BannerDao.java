@@ -8,15 +8,15 @@ public interface BannerDao {
 
     Banner save(BannerInput values);
 
-    void updateImage(int id, String image);
+    void updateImage(long id, String image);
 
-    void delete(int id);
+    void delete(long id);
 
-    boolean existsById(int id);
+    boolean existsById(long id);
 
-    String getBannerImage(int id);
+    String getBannerImage(long id);
 
-    Banner findById(int id);
+    Banner findById(long id);
 
     List<Banner> findAll(SortQuery sort);
 }

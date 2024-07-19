@@ -30,27 +30,27 @@ public class BannerDaoImpl implements BannerDao {
     }
     
     @Override
-    public void updateImage(int id, String image) {
+    public void updateImage(long id, String image) {
     	repo.updateImage(id, image);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         repo.deleteById(id);
     }
 
     @Override
-    public boolean existsById(int id) {
+    public boolean existsById(long id) {
         return repo.existsById(id);
     }
 
     @Override
-    public String getBannerImage(int id) {
+    public String getBannerImage(long id) {
         return repo.getBannerById(id, BannerImageView.class).map(BannerImageView::getImage).orElse(null);
     }
 
     @Override
-    public Banner findById(int id) {
+    public Banner findById(long id) {
         return repo.findById(id).map(e -> BannerMapper.toDomain(e)).orElse(null);
     }
 

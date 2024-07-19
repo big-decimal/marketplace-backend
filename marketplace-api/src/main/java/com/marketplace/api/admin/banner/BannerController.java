@@ -42,13 +42,13 @@ public class BannerController {
     
 	@PreAuthorize("hasPermission('BANNER', 'WRITE')")
     @DeleteMapping("{id:\\d+}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable long id) {
         bannerFacade.delete(id);
     }
 
 	@PreAuthorize("hasPermission('BANNER', 'READ') or hasPermission('BANNER', 'WRITE')")
     @GetMapping("{id:\\d+}")
-    public BannerDTO getBanner(@PathVariable int id) {
+    public BannerDTO getBanner(@PathVariable long id) {
         return bannerFacade.findById(id);
     }
     

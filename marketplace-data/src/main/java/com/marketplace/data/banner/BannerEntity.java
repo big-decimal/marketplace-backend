@@ -20,7 +20,7 @@ public class BannerEntity extends AuditingEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 
 	private String image;
 

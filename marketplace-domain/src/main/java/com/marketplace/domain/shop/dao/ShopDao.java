@@ -60,6 +60,8 @@ public interface ShopDao {
 	List<Shop> getTopFeaturedShops();
 
 	PageData<Shop> findByUser(long userId, PageQuery pageQuery);
+	
+	PageData<Shop> findByMarket(long marketId, PageQuery pageQuery);
 
 	PageData<Shop> findAll(SearchQuery searchQuery);
 }

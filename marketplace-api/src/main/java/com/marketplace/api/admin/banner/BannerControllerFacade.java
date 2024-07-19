@@ -39,11 +39,11 @@ public class BannerControllerFacade {
         return consumerMapper.map(source);
     }
 
-    public void delete(int id) {
+    public void delete(long id) {
         deleteBannerUseCase.apply(id);
     }
 
-    public BannerDTO findById(int id) {
+    public BannerDTO findById(long id) {
     	var source = getBannerByIdUseCase.apply(id);
         return consumerMapper.map(source);
     }

@@ -20,6 +20,8 @@ public class ShopQuery {
     private Boolean featured;
     
     private Shop.Status status;
+    
+    private Integer expireBefore;
 
     private Integer page;
 

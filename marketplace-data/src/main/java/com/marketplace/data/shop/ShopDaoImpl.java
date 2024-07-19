@@ -45,7 +45,7 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Autowired
 	private MarketRepo marketRepo;
-	
+
 	@Autowired
 	private ShopLegalRepo shopLegalRepo;
 
@@ -78,7 +78,7 @@ public class ShopDaoImpl implements ShopDao {
 		entity.setHeadline(values.getHeadline());
 		entity.setAbout(values.getAbout());
 		entity.setSlug(values.getSlug());
-		
+
 		if (values.getMarketId() != null) {
 			entity.setMarket(marketRepo.getReferenceById(values.getMarketId()));
 		} else {
@@ -105,7 +105,7 @@ public class ShopDaoImpl implements ShopDao {
 
 		shopRepo.updateCity(values.getShopId(), cityRepo.getReferenceById(values.getCityId()));
 	}
-	
+
 	@Override
 	public void saveLegal(ShopLegalInput values) {
 		var entity = shopLegalRepo.findById(values.getShopId()).orElseGet(ShopLegalEntity::new);
@@ -113,7 +113,7 @@ public class ShopDaoImpl implements ShopDao {
 		entity.setOwnerName(values.getOwnerName());
 		entity.setSellerName(values.getSellerName());
 		entity.setShopNumber(values.getShopNumber());
-		
+
 		shopLegalRepo.save(entity);
 	}
 
@@ -205,18 +205,16 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public List<Shop> getShopHints(String q, int limit) {
 		String ql = "%" + q + "%";
-		return shopRepo.findShopHints(ql, ql, PageRequest.of(0, limit)).stream()
-				.map(e -> ShopMapper.toDomainCompat(e))
+		return shopRepo.findShopHints(ql, ql, PageRequest.of(0, limit)).stream().map(e -> ShopMapper.toDomainCompat(e))
 				.toList();
 	}
-	
+
 	@Override
 	public List<Shop> getTopFeaturedShops() {
 		long currentTime = System.currentTimeMillis();
-    	var status = Shop.Status.APPROVED;
-		return shopRepo.findByStatusAndFeaturedTrueAndExpiredAtGreaterThanOrderByCreatedAtDesc(status, currentTime).stream()
-				.map(ShopMapper::toDomainCompat)
-				.toList();
+		var status = Shop.Status.APPROVED;
+		return shopRepo.findByStatusAndFeaturedTrueAndExpiredAtGreaterThanOrderByCreatedAtDesc(status, currentTime)
+				.stream().map(ShopMapper::toDomainCompat).toList();
 	}
 
 	@Override
@@ -224,6 +222,13 @@ public class ShopDaoImpl implements ShopDao {
 		var request = PageQueryMapper.fromPageQuery(pageQuery);
 		var pageResult = shopMemberRepo.findByUserIdAndShop_DeletedFalse(userId, request);
 		return PageDataMapper.map(pageResult, e -> ShopMapper.toDomainCompat(e.getShop()));
+	}
+
+	@Override
+	public PageData<Shop> findByMarket(long marketId, PageQuery pageQuery) {
+		var request = PageQueryMapper.fromPageQuery(pageQuery);
+		var pageResult = shopRepo.findByMarketIdAndDeletedFalse(marketId, request);
+		return PageDataMapper.map(pageResult, e -> ShopMapper.toLegalDomain(e));
 	}
 
 	@Override

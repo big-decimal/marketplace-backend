@@ -3,6 +3,7 @@ package com.marketplace.data.shop;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -22,6 +23,8 @@ public interface ShopRepo extends JpaRepository<ShopEntity, Long>, JpaSpecificat
 	List<ShopEntity> findTop10ByStatusOrderByCreatedAtDesc(Shop.Status status);
 	
 	List<ShopEntity> findByStatusAndFeaturedTrueAndExpiredAtGreaterThanOrderByCreatedAtDesc(Shop.Status status, long expiredAt);
+	
+	Page<ShopEntity> findByMarketIdAndDeletedFalse(long marketId, Pageable pageable);
 
 	<T> Optional<T> getShopById(long id, Class<T> type);
 	
