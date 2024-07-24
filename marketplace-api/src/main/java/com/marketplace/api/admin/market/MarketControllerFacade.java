@@ -1,5 +1,7 @@
 package com.marketplace.api.admin.market;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,8 +52,8 @@ public class MarketControllerFacade {
 	}
 
 	@Transactional(readOnly = true)
-	public PageDataDTO<ShopDTO> findByMarket(long marketId, Integer page) {
-		var source = shopDao.findByMarket(marketId, PageQuery.of(page, 10));
+	public PageDataDTO<ShopDTO> findByMarket(long marketId, Integer limit, Integer page) {
+		var source = shopDao.findByMarket(marketId, PageQuery.of(page, Optional.ofNullable(limit).orElse(0)));
 		return adminDataMapper.mapShopPage(source);
 	}
 

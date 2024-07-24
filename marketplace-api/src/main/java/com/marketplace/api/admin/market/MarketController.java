@@ -46,7 +46,7 @@ public class MarketController {
 	public void delete(@PathVariable long id) {
 		marketControllerFacade.delete(id);
 	}
-	
+
 	@PreAuthorize("hasPermission('MARKET', 'READ')")
 	@GetMapping("{id:\\d+}")
 	public MarketDTO findById(@PathVariable long id) {
@@ -55,8 +55,10 @@ public class MarketController {
 
 	@PreAuthorize("hasPermission('MARKET', 'READ')")
 	@GetMapping("{id:\\d+}/shops")
-	public PageDataDTO<ShopDTO> findAll(@PathVariable long id, @RequestParam(required = false) Integer page) {
-		return marketControllerFacade.findByMarket(id, page);
+	public PageDataDTO<ShopDTO> findAll(@PathVariable long id, 
+			@RequestParam(required = false) Integer limit,
+			@RequestParam(required = false) Integer page) {
+		return marketControllerFacade.findByMarket(id, limit, page);
 	}
 
 }
