@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import com.marketplace.data.JpaSpecificationBuilder;
 import com.marketplace.data.PageDataMapper;
@@ -225,8 +226,14 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public PageData<Shop> findByMarket(long marketId, PageQuery pageQuery) {
+	public PageData<Shop> findByMarket(long marketId, String q, PageQuery pageQuery) {
 		var request = PageQueryMapper.fromPageQuery(pageQuery);
+		if (StringUtils.hasText(q)) {
+			var query = "%" + q.trim().toLowerCase() + "%";
+			var pageResult = shopRepo.findMarketShops(marketId, query, request);
+			return PageDataMapper.map(pageResult, e -> ShopMapper.toLegalDomain(e));
+		}
+		
 		var pageResult = shopRepo.findByMarketIdAndDeletedFalse(marketId, request);
 		return PageDataMapper.map(pageResult, e -> ShopMapper.toLegalDomain(e));
 	}

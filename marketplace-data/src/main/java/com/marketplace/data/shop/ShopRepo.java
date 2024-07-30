@@ -25,7 +25,7 @@ public interface ShopRepo extends JpaRepository<ShopEntity, Long>, JpaSpecificat
 	List<ShopEntity> findByStatusAndFeaturedTrueAndExpiredAtGreaterThanOrderByCreatedAtDesc(Shop.Status status, long expiredAt);
 	
 	Page<ShopEntity> findByMarketIdAndDeletedFalse(long marketId, Pageable pageable);
-
+	
 	<T> Optional<T> getShopById(long id, Class<T> type);
 	
 	boolean existsByIdAndDeletedFalse(long id);
@@ -71,5 +71,8 @@ public interface ShopRepo extends JpaRepository<ShopEntity, Long>, JpaSpecificat
 	void updateSlug(@Param("id") long id, @Param("slug") String slug);
 
 	@Query("SELECT s from Shop s WHERE (LOWER(s.name) LIKE :name or LOWER(s.headline) LIKE :headline) AND s.status = 'APPROVED'")
-	List<ShopEntity> findShopHints(@Param("name") String name, @Param("headline") String headline, Pageable pageable);
+	Page<ShopEntity> findShopHints(@Param("name") String name, @Param("headline") String headline, Pageable pageable);
+	
+	@Query("SELECT s from Shop s WHERE s.market.id = :marketId AND s.deleted = false AND (LOWER(s.name) LIKE :q or LOWER(s.headline) LIKE :q)")
+	Page<ShopEntity> findMarketShops(@Param("marketId") long marketId, @Param("q") String q, Pageable pageable);
 }

@@ -52,8 +52,8 @@ public class MarketControllerFacade {
 	}
 
 	@Transactional(readOnly = true)
-	public PageDataDTO<ShopDTO> findByMarket(long marketId, Integer limit, Integer page) {
-		var source = shopDao.findByMarket(marketId, PageQuery.of(page, Optional.ofNullable(limit).orElse(0)));
+	public PageDataDTO<ShopDTO> findByMarket(long marketId, String q, Integer limit, Integer page) {
+		var source = shopDao.findByMarket(marketId, q, PageQuery.of(page, Optional.ofNullable(limit).orElse(0)));
 		return adminDataMapper.mapShopPage(source);
 	}
 

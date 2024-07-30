@@ -55,10 +55,12 @@ public class MarketController {
 
 	@PreAuthorize("hasPermission('MARKET', 'READ')")
 	@GetMapping("{id:\\d+}/shops")
-	public PageDataDTO<ShopDTO> findAll(@PathVariable long id, 
+	public PageDataDTO<ShopDTO> findAll(
+			@PathVariable long id, 
+			@RequestParam(required = false) String q,
 			@RequestParam(required = false) Integer limit,
 			@RequestParam(required = false) Integer page) {
-		return marketControllerFacade.findByMarket(id, limit, page);
+		return marketControllerFacade.findByMarket(id, q, limit, page);
 	}
 
 }
